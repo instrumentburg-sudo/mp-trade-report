@@ -2,11 +2,11 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <meta name="robots" content="noindex, nofollow">
   <meta name="generator" content="pandoc; mp-trade unit-economy report">
   <title>Юнит-экономика текущего прайса KingQueen × 4 связки ·
 mp-trade</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
   <style>
     :root {
       --bg: #fbfbfa; --fg: #1f2328; --muted: #6e7781; --line: #d8dee4;
@@ -255,13 +255,26 @@ SKU прайса нашлись по <code>offer_id</code>): комиссия
 (магистраль + последняя миля), обработка отправления FBS (first mile),
 обратка. Нет в кабинете → статичные шкалы <code>compute()</code> (флаг
 <code>Ozon: нет в кабинете</code>).</li>
+<li><strong>WB — живые тарифы Seller API</strong> из
+<code>monitoring/snapshots/2026-05-12/wb-tariffs.json</code>
+(<code>/api/v1/tariffs/box</code>,
+<code>/api/v1/tariffs/commission</code>,
+<code>/api/tariffs/v1/acceptance/coefficients</code>): для
+<strong>WB-ФБС</strong> — тариф короба (₽ за первый/дополнительный
+литр), КЛС×КТР склада, КВВ-комиссия по категории; для
+<strong>WB-ФБО</strong> — категорийная комиссия для не-вкладочных SKU.
+Дефолт-склад: <code>Рязань (Тюшевское)</code> (ЦФО, мин. коэф
+логистики). Флаг <code>WB: live тарифы</code>.</li>
 <li><strong>WB-ФБО</strong> для SKU из вкладки: <code>store</code> (AID
 Tools / AID Official), «Кэф склада» 150 %, «Выкуп», «Базовый тариф» /
 «Логистика с кэфом» / «Обратная логистика» — из вкладки
-(склад/магазин-зависимы). Вне вкладки — аппроксимация (флаг
-<code>WB-ФБО лог≈</code>).</li>
-<li><strong>WB-ФБС</strong>: «Кэф склада» = КЛС×КТР (дефолт 1.32,
-требует проверки в LK), КГТ+ — из габаритов. <strong>Ozon-ФБС</strong>:
+(склад/магазин-зависимы; вкладка = golden reference, снапшотом не
+перебивается). Вне вкладки — аппроксимация базового тарифа (флаг
+<code>WB-ФБО лог≈</code>) + категорийная комиссия из снапшота, если он
+есть.</li>
+<li><strong>WB-ФБС</strong>: тариф короба и «Кэф склада» = КЛС×КТР —
+live из снапшота WB (фолбэк дефолт 1.32 + сетка ресёрча, требует
+проверки в LK), КГТ+ — из габаритов. <strong>Ozon-ФБС</strong>:
 фикс-тариф по объёму 06.04.2026 + обработка отправления.
 <strong>Ozon-ФБО</strong>: логистика доставки (live или функция объёма),
 хранение 0 ₽/ед (размещение ≤120 дн — бесплатный период), приёмка — моно
@@ -297,16 +310,16 @@ Tools / AID Official), «Кэф склада» 150 %, «Выкуп», «Базо
 <tr class="odd">
 <td>WB · ФБС</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">39</td>
-<td style="text-align: right;">94</td>
-<td style="text-align: right;">×2.7 (129/133 достижимо ≤×5)</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">133</td>
+<td style="text-align: right;">×3.8 (105/133 достижимо ≤×5)</td>
 </tr>
 <tr class="even">
 <td>WB · ФБО</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">24</td>
-<td style="text-align: right;">109</td>
-<td style="text-align: right;">×2.8 (127/133 достижимо ≤×5)</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">133</td>
+<td style="text-align: right;">×3.6 (108/133 достижимо ≤×5)</td>
 </tr>
 <tr class="odd">
 <td>Ozon · ФБС</td>
@@ -334,8 +347,8 @@ Tools / AID Official), «Кэф склада» 150 %, «Выкуп», «Базо
 </blockquote>
 <p><strong>🟢 на всех 4 связках при ×2:</strong> нет ни одного.</p>
 <p><strong>Где SKU прайса выходит в 🟢 при минимальной наценке</strong>
-(число SKU, для которых связка — лучшая): WB · ФБС — 84 · WB · ФБО — 0 ·
-Ozon · ФБС — 31 · Ozon · ФБО — 15.</p>
+(число SKU, для которых связка — лучшая): WB · ФБС — 0 · WB · ФБО — 9 ·
+Ozon · ФБС — 100 · Ozon · ФБО — 17.</p>
 </section>
 <section id="минимальная-наценка-к-себесу-для-выхода-в-" class="level2">
 <h2>Минимальная наценка к Себесу для выхода в 🟢</h2>
@@ -362,629 +375,74 @@ Ozon · ФБС — 31 · Ozon · ФБО — 15.</p>
 <td>Гайковерт бесщеточный KINGQUE…</td>
 <td>электро</td>
 <td style="text-align: right;">13 015</td>
-<td style="text-align: center;">×2.3</td>
-<td style="text-align: center;">×2.3</td>
+<td style="text-align: center;">×3.45</td>
+<td style="text-align: center;">×3.1</td>
 <td style="text-align: center;">×2.6</td>
 <td style="text-align: center;">×2.6</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="even">
-<td><code>KQ-G21-180D</code></td>
-<td>Шуруповерт KINGQUEEN KQ-G21-1…</td>
-<td>сад/авто·АКБ</td>
-<td style="text-align: right;">7 972</td>
-<td style="text-align: center;">×2.3</td>
-<td style="text-align: center;">×2.35</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>BYT-CED05</code></td>
-<td>Шуруповерт бесщеточный BIYOTI…</td>
-<td>сад/авто·АКБ</td>
-<td style="text-align: right;">6 772</td>
-<td style="text-align: center;">×2.3</td>
-<td style="text-align: center;">×2.35</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>WIB-272</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">9 219</td>
-<td style="text-align: center;">×2.35</td>
-<td style="text-align: center;">×2.4</td>
-<td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>KQ-TS312</code></td>
-<td>Набор KINGQUEEN 3 пред, 2 АКБ…</td>
-<td>набор</td>
-<td style="text-align: right;">9 080</td>
-<td style="text-align: center;">×2.35</td>
-<td style="text-align: center;">×2.4</td>
-<td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>BYT-TS301</code></td>
-<td>Набор BIYOTI 3 предмета (Болг…</td>
-<td>набор</td>
-<td style="text-align: right;">8 860</td>
-<td style="text-align: center;">×2.35</td>
-<td style="text-align: center;">×2.4</td>
-<td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
 <td><code>KQ-288</code></td>
 <td>Гайковерт бесщеточный KINGQUE…</td>
 <td>электро</td>
 <td style="text-align: right;">7 735</td>
-<td style="text-align: center;">×2.35</td>
-<td style="text-align: center;">×2.35</td>
+<td style="text-align: center;">×3.5</td>
+<td style="text-align: center;">×3.15</td>
 <td style="text-align: center;">×2.65</td>
 <td style="text-align: center;">×2.65</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-G21-110D</code></td>
-<td>Шуруповерт KINGQUEEN KQ-G21-1…</td>
-<td>сад/авто·АКБ</td>
-<td style="text-align: right;">6 316</td>
-<td style="text-align: center;">×2.35</td>
-<td style="text-align: center;">×2.35</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.8</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>KQ-G21-80D</code></td>
-<td>Шуруповерт KINGQUEEN KQ-G21-8…</td>
-<td>сад/авто·АКБ</td>
-<td style="text-align: right;">4 410</td>
-<td style="text-align: center;">×2.35</td>
-<td style="text-align: center;">×2.4</td>
-<td style="text-align: center;">×2.8</td>
-<td style="text-align: center;">×2.8</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>PA-500-1000-70</code></td>
-<td>Электрическая таль 70м 1000кг…</td>
-<td>разное</td>
-<td style="text-align: right;">17 063</td>
-<td style="text-align: center;">×2.4</td>
-<td style="text-align: center;">×2.4</td>
-<td style="text-align: center;">×2.9</td>
-<td style="text-align: center;">×2.9</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-273</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">7 956</td>
-<td style="text-align: center;">×2.4</td>
-<td style="text-align: center;">×2.4</td>
-<td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>WIB-283</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">7 932</td>
-<td style="text-align: center;">×2.4</td>
-<td style="text-align: center;">×2.4</td>
-<td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>KQ-TS313</code></td>
-<td>Набор KINGQUEEN 3 пред, 2 АКБ…</td>
-<td>набор</td>
-<td style="text-align: right;">7 788</td>
-<td style="text-align: center;">×2.4</td>
-<td style="text-align: center;">×2.4</td>
-<td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>WIB-90013</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">7 627</td>
-<td style="text-align: center;">×2.4</td>
-<td style="text-align: center;">×2.4</td>
-<td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-282</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">7 345</td>
-<td style="text-align: center;">×2.4</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-TS012</code></td>
-<td>Набор KINGQUEEN 2 пред, 2 АКБ…</td>
-<td>набор</td>
-<td style="text-align: right;">6 686</td>
-<td style="text-align: center;">×2.4</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>KQ-TS212</code></td>
-<td>Набор KINGQUEEN 2 предмета (Ш…</td>
-<td>набор</td>
-<td style="text-align: right;">6 621</td>
-<td style="text-align: center;">×2.4</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-TS211</code></td>
-<td>Набор KINGQUEEN 2 предмета (Г…</td>
-<td>набор</td>
-<td style="text-align: right;">6 504</td>
-<td style="text-align: center;">×2.4</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
 <td><code>KQ-YJ803C</code></td>
 <td>Болгарка (УШМ) бесщеточная KI…</td>
 <td>электро</td>
 <td style="text-align: right;">6 017</td>
-<td style="text-align: center;">×2.4</td>
-<td style="text-align: center;">×2.4</td>
+<td style="text-align: center;">×3.55</td>
+<td style="text-align: center;">×3.25</td>
 <td style="text-align: center;">×2.65</td>
 <td style="text-align: center;">×2.65</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="even">
 <td><code>KQ-G21-115G</code></td>
 <td>Болгарка (УШМ) KINGQUEEN АКБ,…</td>
 <td>электро</td>
 <td style="text-align: right;">5 885</td>
-<td style="text-align: center;">×2.4</td>
-<td style="text-align: center;">×2.4</td>
+<td style="text-align: center;">×3.55</td>
+<td style="text-align: center;">×3.25</td>
 <td style="text-align: center;">×2.65</td>
 <td style="text-align: center;">×2.65</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
 <td><code>KQ-G21-600W</code></td>
 <td>Гайковерт KINGQUEEN АКБ 600 N…</td>
 <td>электро</td>
 <td style="text-align: right;">5 496</td>
-<td style="text-align: center;">×2.4</td>
-<td style="text-align: center;">×2.4</td>
+<td style="text-align: center;">×3.55</td>
+<td style="text-align: center;">×3.25</td>
 <td style="text-align: center;">×2.65</td>
 <td style="text-align: center;">×2.65</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="even">
 <td><code>BYT-CEW01</code></td>
 <td>Гайковерт BIYOTI АКБ 350 N/m …</td>
 <td>электро</td>
 <td style="text-align: right;">4 747</td>
-<td style="text-align: center;">×2.4</td>
-<td style="text-align: center;">×2.45</td>
+<td style="text-align: center;">×3.6</td>
+<td style="text-align: center;">×3.25</td>
 <td style="text-align: center;">×2.65</td>
 <td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
-<td><code>KQ-PA800</code></td>
-<td>Электрическая таль 12м KINGQU…</td>
-<td>разное</td>
-<td style="text-align: right;">9 057</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.9</td>
-<td style="text-align: center;">×2.9</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>PA-800</code></td>
-<td>Электрическая таль 12м Kingqu…</td>
-<td>разное</td>
-<td style="text-align: right;">8 246</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.9</td>
-<td style="text-align: center;">×2.9</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>KQ-DSR-225</code></td>
-<td>Машинка для шлифовки стен KIN…</td>
-<td>разное</td>
-<td style="text-align: right;">7 532</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.5</td>
-<td style="text-align: center;">×2.9</td>
-<td style="text-align: center;">×2.95</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>PA-300</code></td>
-<td>Электрическая таль 12м Kingqu…</td>
-<td>разное</td>
-<td style="text-align: right;">6 387</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.5</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td>WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-90001</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">6 321</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td>WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>WIB-257</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">6 319</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-294</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">6 233</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>WIB-90014</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">6 221</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.5</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-90012</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">6 104</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.5</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>WIB-287</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">6 019</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.5</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-80003</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">6 001</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.5</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td>WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>WIB-80001</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">5 770</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.5</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td>WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-297</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">5 646</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.5</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ286</code></td>
-<td>Гайковерт KINGQUEEN АКБ, 1/2,…</td>
-<td>электро</td>
-<td style="text-align: right;">3 800</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.5</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td>WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>KQ-903D</code></td>
-<td>Шуруповерт бесщеточный ударны…</td>
-<td>сад/авто·АКБ</td>
-<td style="text-align: right;">2 743</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.5</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-902K.1</code></td>
-<td>Шуруповерт бесщеточный ударны…</td>
-<td>сад/авто·АКБ</td>
-<td style="text-align: right;">2 289</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.55</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.8</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>12PC202-P</code></td>
-<td>Ключи комбинированные со встр…</td>
-<td>разное</td>
-<td style="text-align: right;">2 147</td>
-<td style="text-align: center;">×2.45</td>
-<td style="text-align: center;">×2.55</td>
-<td style="text-align: center;">×2.8</td>
-<td style="text-align: center;">×2.85</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>RH-2T-6M</code></td>
-<td>Ручная рычажная таль (2т, 6м)…</td>
-<td>разное</td>
-<td style="text-align: right;">5 781</td>
-<td style="text-align: center;">×2.5</td>
-<td style="text-align: center;">×2.5</td>
-<td style="text-align: center;">×2.95</td>
-<td style="text-align: center;">×2.95</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>FLD05</code></td>
-<td>Гидравлическая стяжка KINGQUE…</td>
-<td>разное</td>
-<td style="text-align: right;">5 382</td>
-<td style="text-align: center;">×2.5</td>
-<td style="text-align: center;">×2.55</td>
-<td style="text-align: center;">×2.95</td>
-<td style="text-align: center;">×2.95</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>WIB-256</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">5 089</td>
-<td style="text-align: center;">×2.5</td>
-<td style="text-align: center;">×2.55</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-264</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">5 011</td>
-<td style="text-align: center;">×2.5</td>
-<td style="text-align: center;">×2.55</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>WIB-80002</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">4 961</td>
-<td style="text-align: center;">×2.5</td>
-<td style="text-align: center;">×2.55</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>CH-3T-3M</code></td>
-<td>Таль ручная шестеренная стаци…</td>
-<td>разное</td>
-<td style="text-align: right;">4 856</td>
-<td style="text-align: center;">×2.5</td>
-<td style="text-align: center;">×2.55</td>
-<td style="text-align: center;">×2.95</td>
-<td style="text-align: center;">×2.95</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-G1200H</code></td>
-<td>Перфоратор KINGQUEEN KQ-G1200H</td>
-<td>электро</td>
-<td style="text-align: right;">4 786</td>
-<td style="text-align: center;">×2.5</td>
-<td style="text-align: center;">×2.55</td>
-<td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>KQ-2201</code></td>
-<td>Перфоратор бесщеточный KINGQU…</td>
-<td>электро</td>
-<td style="text-align: right;">4 756</td>
-<td style="text-align: center;">×2.5</td>
-<td style="text-align: center;">×2.55</td>
-<td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-G21-12CT</code></td>
-<td>Пила цепная АКБ 12 дюймов в к…</td>
-<td>сад/авто·АКБ</td>
-<td style="text-align: right;">6 246</td>
-<td style="text-align: center;">×2.55</td>
-<td style="text-align: center;">×2.6</td>
-<td style="text-align: center;">×2.8</td>
-<td style="text-align: center;">×2.8</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>KQ-G1100H</code></td>
-<td>Перфоратор KINGQUEEN KQ-G1100H</td>
-<td>электро</td>
-<td style="text-align: right;">4 298</td>
-<td style="text-align: center;">×2.55</td>
-<td style="text-align: center;">×2.6</td>
-<td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>RH-1T-6M</code></td>
-<td>Ручная рычажная таль (1т, 6м)…</td>
-<td>разное</td>
-<td style="text-align: right;">4 043</td>
-<td style="text-align: center;">×2.55</td>
-<td style="text-align: center;">×2.6</td>
-<td style="text-align: center;">×3</td>
-<td style="text-align: center;">×3</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>KQ-902K</code></td>
-<td>Шуруповерт бесщеточный ударны…</td>
-<td>сад/авто·АКБ</td>
-<td style="text-align: right;">1 780</td>
-<td style="text-align: center;">×2.55</td>
-<td style="text-align: center;">×2.65</td>
-<td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>CH-2T-3M</code></td>
-<td>Таль ручная шестеренная стаци…</td>
-<td>разное</td>
-<td style="text-align: right;">3 080</td>
-<td style="text-align: center;">×2.6</td>
-<td style="text-align: center;">×2.65</td>
-<td style="text-align: center;">×2.8</td>
-<td style="text-align: center;">×2.8</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>RH-1T-3M</code></td>
-<td>Ручная рычажная таль (1т, 3м)…</td>
-<td>разное</td>
-<td style="text-align: right;">2 882</td>
-<td style="text-align: center;">×2.6</td>
-<td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td>WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-G1250D</code></td>
-<td>Угловая шлифмашина (УШМ) KING…</td>
-<td>электро</td>
-<td style="text-align: right;">2 296</td>
-<td style="text-align: center;">×2.6</td>
-<td style="text-align: center;">×2.65</td>
-<td style="text-align: center;">×2.65</td>
-<td style="text-align: center;">×2.65</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>KQ-G1150D</code></td>
-<td>Угловая шлифмашина (УШМ) KING…</td>
-<td>электро</td>
-<td style="text-align: right;">2 148</td>
-<td style="text-align: center;">×2.6</td>
-<td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-G21-12C</code></td>
-<td>Пила цепная АКБ 12 дюймов в к…</td>
-<td>сад/авто·АКБ</td>
-<td style="text-align: right;">4 739</td>
-<td style="text-align: center;">×2.65</td>
-<td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.85</td>
-<td style="text-align: center;">×2.85</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-60017</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">3 206</td>
-<td style="text-align: center;">×2.65</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
 <td><code>WIB-233</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
@@ -993,31 +451,104 @@ Ozon · ФБС — 31 · Ozon · ФБО — 15.</p>
 <td style="text-align: center;">×4</td>
 <td style="text-align: center;">×2.65</td>
 <td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки)</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB: live тарифы</td>
+</tr>
+<tr class="even">
+<td><code>KQ-G1250D</code></td>
+<td>Угловая шлифмашина (УШМ) KING…</td>
+<td>электро</td>
+<td style="text-align: right;">2 296</td>
+<td style="text-align: center;">×3.85</td>
+<td style="text-align: center;">×3.6</td>
+<td style="text-align: center;">×2.65</td>
+<td style="text-align: center;">×2.65</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
-<td><code>tab-4-white</code></td>
-<td>Стол туристический белый и 4 …</td>
-<td>разное</td>
-<td style="text-align: right;">2 616</td>
-<td style="text-align: center;">×2.65</td>
+<td><code>WIB-272</code></td>
+<td>Набор инструментов KINGQUEEN …</td>
+<td>набор</td>
+<td style="text-align: right;">9 219</td>
+<td style="text-align: center;">×3.7</td>
+<td style="text-align: center;">×3.35</td>
 <td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.85</td>
-<td style="text-align: center;">×2.85</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td style="text-align: center;">×2.7</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
+<td><code>KQ-TS312</code></td>
+<td>Набор KINGQUEEN 3 пред, 2 АКБ…</td>
+<td>набор</td>
+<td style="text-align: right;">9 080</td>
+<td style="text-align: center;">×3.7</td>
+<td style="text-align: center;">×3.35</td>
+<td style="text-align: center;">×2.7</td>
+<td style="text-align: center;">×2.7</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>BYT-TS301</code></td>
+<td>Набор BIYOTI 3 предмета (Болг…</td>
+<td>набор</td>
+<td style="text-align: right;">8 860</td>
+<td style="text-align: center;">×3.7</td>
+<td style="text-align: center;">×3.4</td>
+<td style="text-align: center;">×2.7</td>
+<td style="text-align: center;">×2.7</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
+<td><code>WIB-273</code></td>
+<td>Набор инструментов KINGQUEEN …</td>
+<td>набор</td>
+<td style="text-align: right;">7 956</td>
+<td style="text-align: center;">×3.75</td>
+<td style="text-align: center;">×3.4</td>
+<td style="text-align: center;">×2.7</td>
+<td style="text-align: center;">×2.7</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>WIB-283</code></td>
+<td>Набор инструментов KINGQUEEN …</td>
+<td>набор</td>
+<td style="text-align: right;">7 932</td>
+<td style="text-align: center;">×3.75</td>
+<td style="text-align: center;">×3.4</td>
+<td style="text-align: center;">×2.7</td>
+<td style="text-align: center;">×2.7</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="even">
 <td><code>WIB-270</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">7 914</td>
-<td style="text-align: center;">×3.7</td>
+<td style="text-align: center;">×3.65</td>
 <td style="text-align: center;">×3.8</td>
 <td style="text-align: center;">×2.7</td>
 <td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки)</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB: live тарифы</td>
 </tr>
 <tr class="odd">
+<td><code>KQ-TS313</code></td>
+<td>Набор KINGQUEEN 3 пред, 2 АКБ…</td>
+<td>набор</td>
+<td style="text-align: right;">7 788</td>
+<td style="text-align: center;">×3.75</td>
+<td style="text-align: center;">×3.4</td>
+<td style="text-align: center;">×2.7</td>
+<td style="text-align: center;">×2.7</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
 <td><code>WIB-284</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
@@ -1026,9 +557,9 @@ Ozon · ФБС — 31 · Ozon · ФБО — 15.</p>
 <td style="text-align: center;">×3.8</td>
 <td style="text-align: center;">×2.7</td>
 <td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки)</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB: live тарифы</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>WIB-277</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
@@ -1037,139 +568,231 @@ Ozon · ФБС — 31 · Ozon · ФБО — 15.</p>
 <td style="text-align: center;">×3.6</td>
 <td style="text-align: center;">×2.7</td>
 <td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки)</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB: live тарифы</td>
+</tr>
+<tr class="even">
+<td><code>WIB-90013</code></td>
+<td>Набор инструментов KINGQUEEN …</td>
+<td>набор</td>
+<td style="text-align: right;">7 627</td>
+<td style="text-align: center;">×3.75</td>
+<td style="text-align: center;">×3.4</td>
+<td style="text-align: center;">×2.7</td>
+<td style="text-align: center;">×2.7</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
+<td><code>WIB-282</code></td>
+<td>Набор инструментов KINGQUEEN …</td>
+<td>набор</td>
+<td style="text-align: right;">7 345</td>
+<td style="text-align: center;">×3.75</td>
+<td style="text-align: center;">×3.45</td>
+<td style="text-align: center;">×2.7</td>
+<td style="text-align: center;">×2.7</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
 <td><code>WIB-280</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">7 061</td>
-<td style="text-align: center;">×3.45</td>
+<td style="text-align: center;">×3.4</td>
 <td style="text-align: center;">×3.65</td>
 <td style="text-align: center;">×2.7</td>
 <td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки)</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB: live тарифы</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>WIB-285</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">6 829</td>
-<td style="text-align: center;">×3.75</td>
+<td style="text-align: center;">×3.7</td>
 <td style="text-align: center;">×3.85</td>
 <td style="text-align: center;">×2.7</td>
 <td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки)</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB: live тарифы</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>WIB-274</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">6 795</td>
-<td style="text-align: center;">×3.45</td>
+<td style="text-align: center;">×3.4</td>
 <td style="text-align: center;">×3.7</td>
 <td style="text-align: center;">×2.7</td>
 <td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки)</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB: live тарифы</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>WIB-289</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">6 707</td>
-<td style="text-align: center;">×3.75</td>
+<td style="text-align: center;">×3.7</td>
 <td style="text-align: center;">×3.85</td>
 <td style="text-align: center;">×2.7</td>
 <td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки)</td>
-</tr>
-<tr class="odd">
-<td><code>KQ-HJP03</code></td>
-<td>Подкатной пневматический домк…</td>
-<td>разное</td>
-<td style="text-align: right;">6 444</td>
-<td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×3</td>
-<td style="text-align: center;">×3</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB: live тарифы</td>
 </tr>
 <tr class="even">
-<td><code>QJD62A</code></td>
-<td>Гидравлический подкатной домк…</td>
-<td>разное</td>
-<td style="text-align: right;">6 139</td>
+<td><code>KQ-G1200H</code></td>
+<td>Перфоратор KINGQUEEN KQ-G1200H</td>
+<td>электро</td>
+<td style="text-align: right;">4 786</td>
+<td style="text-align: center;">×3.7</td>
+<td style="text-align: center;">×3.4</td>
 <td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.8</td>
-<td style="text-align: center;">×3</td>
-<td style="text-align: center;">×3</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td style="text-align: center;">×2.7</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
+<td><code>KQ-2201</code></td>
+<td>Перфоратор бесщеточный KINGQU…</td>
+<td>электро</td>
+<td style="text-align: right;">4 756</td>
+<td style="text-align: center;">×3.7</td>
+<td style="text-align: center;">×3.4</td>
+<td style="text-align: center;">×2.7</td>
+<td style="text-align: center;">×2.7</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
+<td><code>KQ-G1100H</code></td>
+<td>Перфоратор KINGQUEEN KQ-G1100H</td>
+<td>электро</td>
+<td style="text-align: right;">4 298</td>
+<td style="text-align: center;">×3.75</td>
+<td style="text-align: center;">×3.45</td>
+<td style="text-align: center;">×2.7</td>
+<td style="text-align: center;">×2.7</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>WIB-60017</code></td>
+<td>Набор инструментов KINGQUEEN …</td>
+<td>набор</td>
+<td style="text-align: right;">3 206</td>
+<td style="text-align: center;">×4.15</td>
+<td style="text-align: center;">×3.85</td>
+<td style="text-align: center;">×2.7</td>
+<td style="text-align: center;">×2.7</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
 <td><code>WIB-224</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">3 049</td>
+<td style="text-align: center;">×4.2</td>
+<td style="text-align: center;">×3.9</td>
 <td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.75</td>
 <td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>WIB-60002</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">2 990</td>
+<td style="text-align: center;">×4.2</td>
+<td style="text-align: center;">×3.9</td>
+<td style="text-align: center;">×2.75</td>
 <td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.7</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-60001</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">2 850</td>
-<td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.8</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="even">
-<td><code>CH-1T-3M</code></td>
-<td>Таль ручная шестеренная стаци…</td>
-<td>разное</td>
-<td style="text-align: right;">2 382</td>
+<td><code>KQ-G1150D</code></td>
+<td>Угловая шлифмашина (УШМ) KING…</td>
+<td>электро</td>
+<td style="text-align: right;">2 148</td>
+<td style="text-align: center;">×3.9</td>
+<td style="text-align: center;">×3.6</td>
 <td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.85</td>
-<td style="text-align: center;">×2.85</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td style="text-align: center;">×2.7</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
-<td><code>KT-1T-3M</code></td>
-<td>Ручная шестеренная стационарн…</td>
-<td>разное</td>
-<td style="text-align: right;">2 303</td>
-<td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.85</td>
-<td style="text-align: center;">×2.85</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-2C150</code></td>
-<td>Автомобильный компрессор KING…</td>
+<td><code>KQ-902K</code></td>
+<td>Шуруповерт бесщеточный ударны…</td>
 <td>сад/авто·АКБ</td>
-<td style="text-align: right;">1 541</td>
+<td style="text-align: right;">1 780</td>
+<td style="text-align: center;">×3.9</td>
+<td style="text-align: center;">×3.65</td>
 <td style="text-align: center;">×2.7</td>
-<td style="text-align: center;">×2.8</td>
+<td style="text-align: center;">×2.7</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
+<td><code>KQ-G21-180D</code></td>
+<td>Шуруповерт KINGQUEEN KQ-G21-1…</td>
+<td>сад/авто·АКБ</td>
+<td style="text-align: right;">7 972</td>
+<td style="text-align: center;">×3.55</td>
+<td style="text-align: center;">×3.2</td>
 <td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.8</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td style="text-align: center;">×2.75</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>BYT-CED05</code></td>
+<td>Шуруповерт бесщеточный BIYOTI…</td>
+<td>сад/авто·АКБ</td>
+<td style="text-align: right;">6 772</td>
+<td style="text-align: center;">×3.6</td>
+<td style="text-align: center;">×3.25</td>
+<td style="text-align: center;">×2.75</td>
+<td style="text-align: center;">×2.75</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
+<td><code>KQ-TS012</code></td>
+<td>Набор KINGQUEEN 2 пред, 2 АКБ…</td>
+<td>набор</td>
+<td style="text-align: right;">6 686</td>
+<td style="text-align: center;">×3.8</td>
+<td style="text-align: center;">×3.45</td>
+<td style="text-align: center;">×2.75</td>
+<td style="text-align: center;">×2.75</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>KQ-TS212</code></td>
+<td>Набор KINGQUEEN 2 предмета (Ш…</td>
+<td>набор</td>
+<td style="text-align: right;">6 621</td>
+<td style="text-align: center;">×3.8</td>
+<td style="text-align: center;">×3.45</td>
+<td style="text-align: center;">×2.75</td>
+<td style="text-align: center;">×2.75</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
+<td><code>KQ-TS211</code></td>
+<td>Набор KINGQUEEN 2 предмета (Г…</td>
+<td>набор</td>
+<td style="text-align: right;">6 504</td>
+<td style="text-align: center;">×3.8</td>
+<td style="text-align: center;">×3.5</td>
+<td style="text-align: center;">×2.75</td>
+<td style="text-align: center;">×2.75</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
 <td><code>WIB-90007</code></td>
@@ -1180,9 +803,69 @@ Ozon · ФБС — 31 · Ozon · ФБО — 15.</p>
 <td style="text-align: center;">×3.9</td>
 <td style="text-align: center;">×2.75</td>
 <td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки)</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB: live тарифы</td>
 </tr>
 <tr class="even">
+<td><code>WIB-257</code></td>
+<td>Набор инструментов KINGQUEEN …</td>
+<td>набор</td>
+<td style="text-align: right;">6 319</td>
+<td style="text-align: center;">×3.8</td>
+<td style="text-align: center;">×3.5</td>
+<td style="text-align: center;">×2.75</td>
+<td style="text-align: center;">×2.75</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>KQ-G21-110D</code></td>
+<td>Шуруповерт KINGQUEEN KQ-G21-1…</td>
+<td>сад/авто·АКБ</td>
+<td style="text-align: right;">6 316</td>
+<td style="text-align: center;">×3.6</td>
+<td style="text-align: center;">×3.25</td>
+<td style="text-align: center;">×2.75</td>
+<td style="text-align: center;">×2.8</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
+<td><code>WIB-294</code></td>
+<td>Набор инструментов KINGQUEEN …</td>
+<td>набор</td>
+<td style="text-align: right;">6 233</td>
+<td style="text-align: center;">×3.8</td>
+<td style="text-align: center;">×3.5</td>
+<td style="text-align: center;">×2.75</td>
+<td style="text-align: center;">×2.75</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>WIB-90014</code></td>
+<td>Набор инструментов KINGQUEEN …</td>
+<td>набор</td>
+<td style="text-align: right;">6 221</td>
+<td style="text-align: center;">×3.8</td>
+<td style="text-align: center;">×3.5</td>
+<td style="text-align: center;">×2.75</td>
+<td style="text-align: center;">×2.75</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
+<td><code>WIB-90012</code></td>
+<td>Набор инструментов KINGQUEEN …</td>
+<td>набор</td>
+<td style="text-align: right;">6 104</td>
+<td style="text-align: center;">×3.85</td>
+<td style="text-align: center;">×3.5</td>
+<td style="text-align: center;">×2.75</td>
+<td style="text-align: center;">×2.75</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
 <td><code>WIB-292</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
@@ -1191,29 +874,19 @@ Ozon · ФБС — 31 · Ozon · ФБО — 15.</p>
 <td style="text-align: center;">×3.75</td>
 <td style="text-align: center;">×2.75</td>
 <td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки)</td>
-</tr>
-<tr class="odd">
-<td><code>KQ-HJP02</code></td>
-<td>Подкатной пневматический домк…</td>
-<td>разное</td>
-<td style="text-align: right;">5 907</td>
-<td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.8</td>
-<td style="text-align: center;">×3</td>
-<td style="text-align: center;">×3</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB: live тарифы</td>
 </tr>
 <tr class="even">
-<td><code>KQ-HJP01</code></td>
-<td>Подкатной пневматический домк…</td>
-<td>разное</td>
-<td style="text-align: right;">5 907</td>
+<td><code>WIB-287</code></td>
+<td>Набор инструментов KINGQUEEN …</td>
+<td>набор</td>
+<td style="text-align: right;">6 019</td>
+<td style="text-align: center;">×3.85</td>
+<td style="text-align: center;">×3.5</td>
 <td style="text-align: center;">×2.75</td>
-<td style="text-align: center;">×2.8</td>
-<td style="text-align: center;">×3</td>
-<td style="text-align: center;">×3</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td style="text-align: center;">×2.75</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
 <td><code>WIB-250</code></td>
@@ -1224,29 +897,77 @@ Ozon · ФБС — 31 · Ozon · ФБО — 15.</p>
 <td style="text-align: center;">×3.7</td>
 <td style="text-align: center;">×2.75</td>
 <td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки)</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB: live тарифы</td>
 </tr>
 <tr class="even">
+<td><code>WIB-297</code></td>
+<td>Набор инструментов KINGQUEEN …</td>
+<td>набор</td>
+<td style="text-align: right;">5 646</td>
+<td style="text-align: center;">×3.85</td>
+<td style="text-align: center;">×3.55</td>
+<td style="text-align: center;">×2.75</td>
+<td style="text-align: center;">×2.75</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
 <td><code>WIB-258</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">5 634</td>
-<td style="text-align: center;">×3.8</td>
+<td style="text-align: center;">×3.75</td>
 <td style="text-align: center;">×3.95</td>
 <td style="text-align: center;">×2.75</td>
 <td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки)</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB: live тарифы</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>WIB-90018</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">5 211</td>
-<td style="text-align: center;">×3.85</td>
+<td style="text-align: center;">×3.8</td>
 <td style="text-align: center;">×3.95</td>
 <td style="text-align: center;">×2.75</td>
 <td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки)</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB: live тарифы</td>
+</tr>
+<tr class="odd">
+<td><code>WIB-256</code></td>
+<td>Набор инструментов KINGQUEEN …</td>
+<td>набор</td>
+<td style="text-align: right;">5 089</td>
+<td style="text-align: center;">×3.9</td>
+<td style="text-align: center;">×3.6</td>
+<td style="text-align: center;">×2.75</td>
+<td style="text-align: center;">×2.75</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
+<td><code>WIB-264</code></td>
+<td>Набор инструментов KINGQUEEN …</td>
+<td>набор</td>
+<td style="text-align: right;">5 011</td>
+<td style="text-align: center;">×3.9</td>
+<td style="text-align: center;">×3.6</td>
+<td style="text-align: center;">×2.75</td>
+<td style="text-align: center;">×2.75</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>WIB-80002</code></td>
+<td>Набор инструментов KINGQUEEN …</td>
+<td>набор</td>
+<td style="text-align: right;">4 961</td>
+<td style="text-align: center;">×3.9</td>
+<td style="text-align: center;">×3.6</td>
+<td style="text-align: center;">×2.75</td>
+<td style="text-align: center;">×2.75</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="even">
 <td><code>WIB-263</code></td>
@@ -1257,18 +978,18 @@ Ozon · ФБС — 31 · Ozon · ФБО — 15.</p>
 <td style="text-align: center;">×4</td>
 <td style="text-align: center;">×2.75</td>
 <td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки)</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB: live тарифы</td>
 </tr>
 <tr class="odd">
 <td><code>WIB-262</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">4 558</td>
-<td style="text-align: center;">×3.9</td>
+<td style="text-align: center;">×3.85</td>
 <td style="text-align: center;">×4</td>
 <td style="text-align: center;">×2.75</td>
 <td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки)</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB: live тарифы</td>
 </tr>
 <tr class="even">
 <td><code>WIB-246</code></td>
@@ -1279,64 +1000,129 @@ Ozon · ФБС — 31 · Ozon · ФБО — 15.</p>
 <td style="text-align: center;">×3.65</td>
 <td style="text-align: center;">×2.75</td>
 <td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки)</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB: live тарифы</td>
+</tr>
+<tr class="odd">
+<td><code>WIB-60001</code></td>
+<td>Набор инструментов KINGQUEEN …</td>
+<td>набор</td>
+<td style="text-align: right;">2 850</td>
+<td style="text-align: center;">×4.25</td>
+<td style="text-align: center;">×3.95</td>
+<td style="text-align: center;">×2.75</td>
+<td style="text-align: center;">×2.75</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
+<td><code>KQ-903D</code></td>
+<td>Шуруповерт бесщеточный ударны…</td>
+<td>сад/авто·АКБ</td>
+<td style="text-align: right;">2 743</td>
+<td style="text-align: center;">×3.75</td>
+<td style="text-align: center;">×3.45</td>
+<td style="text-align: center;">×2.75</td>
+<td style="text-align: center;">×2.75</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
 <td><code>09315</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">2 532</td>
-<td style="text-align: center;">×2.8</td>
-<td style="text-align: center;">×2.9</td>
+<td style="text-align: center;">×4.35</td>
+<td style="text-align: center;">×4.05</td>
 <td style="text-align: center;">×2.75</td>
 <td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="even">
 <td><code>WIB-60011</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">2 448</td>
-<td style="text-align: center;">×2.8</td>
-<td style="text-align: center;">×2.9</td>
+<td style="text-align: center;">×4.35</td>
+<td style="text-align: center;">×4.1</td>
 <td style="text-align: center;">×2.8</td>
 <td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
 <td><code>WIB-60006</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">2 448</td>
-<td style="text-align: center;">×2.8</td>
-<td style="text-align: center;">×2.9</td>
+<td style="text-align: center;">×4.35</td>
+<td style="text-align: center;">×4.1</td>
 <td style="text-align: center;">×2.8</td>
 <td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="even">
+<td><code>KQ-902K.1</code></td>
+<td>Шуруповерт бесщеточный ударны…</td>
+<td>сад/авто·АКБ</td>
+<td style="text-align: right;">2 289</td>
+<td style="text-align: center;">×3.8</td>
+<td style="text-align: center;">×3.5</td>
+<td style="text-align: center;">×2.75</td>
+<td style="text-align: center;">×2.8</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
 <td><code>WIB-402</code></td>
 <td>Набор ударных удлиненных голо…</td>
 <td>набор</td>
 <td style="text-align: right;">1 679</td>
-<td style="text-align: center;">×3.05</td>
-<td style="text-align: center;">×3.2</td>
+<td style="text-align: center;">×4.75</td>
+<td style="text-align: center;">×4.55</td>
 <td style="text-align: center;">×2.8</td>
 <td style="text-align: center;">×2.75</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>QJD48B</code></td>
-<td>Гидравлический бутылочный дом…</td>
-<td>разное</td>
-<td style="text-align: right;">5 201</td>
-<td style="text-align: center;">×2.8</td>
-<td style="text-align: center;">×2.85</td>
-<td style="text-align: center;">×3.05</td>
-<td style="text-align: center;">×3</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="even">
+<td><code>KQ-2C150</code></td>
+<td>Автомобильный компрессор KING…</td>
+<td>сад/авто·АКБ</td>
+<td style="text-align: right;">1 541</td>
+<td style="text-align: center;">×4.15</td>
+<td style="text-align: center;">×3.85</td>
+<td style="text-align: center;">×2.75</td>
+<td style="text-align: center;">×2.8</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>KQ-G21-12CT</code></td>
+<td>Пила цепная АКБ 12 дюймов в к…</td>
+<td>сад/авто·АКБ</td>
+<td style="text-align: right;">6 246</td>
+<td style="text-align: center;">×3.9</td>
+<td style="text-align: center;">×3.55</td>
+<td style="text-align: center;">×2.8</td>
+<td style="text-align: center;">×2.8</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
+<td><code>KQ-G21-80D</code></td>
+<td>Шуруповерт KINGQUEEN KQ-G21-8…</td>
+<td>сад/авто·АКБ</td>
+<td style="text-align: right;">4 410</td>
+<td style="text-align: center;">×3.65</td>
+<td style="text-align: center;">×3.3</td>
+<td style="text-align: center;">×2.8</td>
+<td style="text-align: center;">×2.8</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
 <td><code>WIB-244</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
@@ -1345,9 +1131,9 @@ Ozon · ФБС — 31 · Ozon · ФБО — 15.</p>
 <td style="text-align: center;">×3.95</td>
 <td style="text-align: center;">×2.8</td>
 <td style="text-align: center;">×2.8</td>
-<td>Ozon: нет в кабинете (статичные ставки)</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB: live тарифы</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>QJD61-3A-1</code></td>
 <td>Гидравлический компактный под…</td>
 <td>разное</td>
@@ -1356,172 +1142,390 @@ Ozon · ФБС — 31 · Ozon · ФБО — 15.</p>
 <td style="text-align: center;">×4.1</td>
 <td style="text-align: center;">×2.8</td>
 <td style="text-align: center;">×2.8</td>
-<td>Ozon: нет в кабинете (статичные ставки)</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB: live тарифы</td>
+</tr>
+<tr class="odd">
+<td><code>CH-2T-3M</code></td>
+<td>Таль ручная шестеренная стаци…</td>
+<td>разное</td>
+<td style="text-align: right;">3 080</td>
+<td style="text-align: center;">×3.85</td>
+<td style="text-align: center;">×3.5</td>
+<td style="text-align: center;">×2.8</td>
+<td style="text-align: center;">×2.8</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="even">
 <td><code>WIB-60006-24</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">2 375</td>
+<td style="text-align: center;">×4.4</td>
+<td style="text-align: center;">×4.15</td>
 <td style="text-align: center;">×2.8</td>
-<td style="text-align: center;">×2.9</td>
 <td style="text-align: center;">×2.8</td>
-<td style="text-align: center;">×2.8</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
 <td><code>WIB-235</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">2 302</td>
-<td style="text-align: center;">×2.85</td>
-<td style="text-align: center;">×2.95</td>
+<td style="text-align: center;">×4.4</td>
+<td style="text-align: center;">×4.15</td>
 <td style="text-align: center;">×2.8</td>
 <td style="text-align: center;">×2.8</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="even">
+<td><code>12PC202-P</code></td>
+<td>Ключи комбинированные со встр…</td>
+<td>разное</td>
+<td style="text-align: right;">2 147</td>
+<td style="text-align: center;">×3.7</td>
+<td style="text-align: center;">×3.35</td>
+<td style="text-align: center;">×2.8</td>
+<td style="text-align: center;">×2.85</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
 <td><code>WIB-60007-24</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">2 083</td>
-<td style="text-align: center;">×2.9</td>
-<td style="text-align: center;">×3.05</td>
+<td style="text-align: center;">×4.5</td>
+<td style="text-align: center;">×4.25</td>
 <td style="text-align: center;">×2.85</td>
 <td style="text-align: center;">×2.8</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>WIB-40002</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">1 514</td>
-<td style="text-align: center;">×3.15</td>
-<td style="text-align: center;">×3.35</td>
+<td style="text-align: center;">×4.9</td>
+<td style="text-align: center;">×4.7</td>
 <td style="text-align: center;">×2.8</td>
 <td style="text-align: center;">×2.8</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>WIB-206</code></td>
 <td>Набор ударных удлиненных голо…</td>
 <td>набор</td>
 <td style="text-align: right;">1 494</td>
-<td style="text-align: center;">×3.2</td>
-<td style="text-align: center;">×3.35</td>
+<td style="text-align: center;">×4.9</td>
+<td style="text-align: center;">×4.75</td>
 <td style="text-align: center;">×2.85</td>
 <td style="text-align: center;">×2.8</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
+<td><code>KQ-G21-12C</code></td>
+<td>Пила цепная АКБ 12 дюймов в к…</td>
+<td>сад/авто·АКБ</td>
+<td style="text-align: right;">4 739</td>
+<td style="text-align: center;">×4</td>
+<td style="text-align: center;">×3.7</td>
+<td style="text-align: center;">×2.85</td>
+<td style="text-align: center;">×2.85</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
+<td><code>tab-4-white</code></td>
+<td>Стол туристический белый и 4 …</td>
+<td>разное</td>
+<td style="text-align: right;">2 616</td>
+<td style="text-align: center;">×3.9</td>
+<td style="text-align: center;">×3.6</td>
+<td style="text-align: center;">×2.85</td>
+<td style="text-align: center;">×2.85</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
+<td><code>CH-1T-3M</code></td>
+<td>Таль ручная шестеренная стаци…</td>
+<td>разное</td>
+<td style="text-align: right;">2 382</td>
+<td style="text-align: center;">×3.95</td>
+<td style="text-align: center;">×3.65</td>
+<td style="text-align: center;">×2.85</td>
+<td style="text-align: center;">×2.85</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>KT-1T-3M</code></td>
+<td>Ручная шестеренная стационарн…</td>
+<td>разное</td>
+<td style="text-align: right;">2 303</td>
+<td style="text-align: center;">×3.95</td>
+<td style="text-align: center;">×3.65</td>
+<td style="text-align: center;">×2.85</td>
+<td style="text-align: center;">×2.85</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
 <td><code>WIB-199</code></td>
 <td>Трещотка телескопическая 1/2 …</td>
 <td>набор</td>
 <td style="text-align: right;">1 363</td>
-<td style="text-align: center;">×3.3</td>
-<td style="text-align: center;">×3.45</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">×4.9</td>
 <td style="text-align: center;">×2.85</td>
 <td style="text-align: center;">×2.85</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>WIB-10002</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">1 340</td>
-<td style="text-align: center;">×3.3</td>
-<td style="text-align: center;">×3.5</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">×4.9</td>
 <td style="text-align: center;">×2.9</td>
 <td style="text-align: center;">×2.85</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>WIB-198</code></td>
 <td>Трещотка телескопическая 1/2 …</td>
 <td>набор</td>
 <td style="text-align: right;">1 310</td>
-<td style="text-align: center;">×3.3</td>
-<td style="text-align: center;">×3.5</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">×4.95</td>
 <td style="text-align: center;">×2.9</td>
 <td style="text-align: center;">×2.85</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>PA-500-1000-70</code></td>
+<td>Электрическая таль 70м 1000кг…</td>
+<td>разное</td>
+<td style="text-align: right;">17 063</td>
+<td style="text-align: center;">×3.55</td>
+<td style="text-align: center;">×3.2</td>
+<td style="text-align: center;">×2.9</td>
+<td style="text-align: center;">×2.9</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="even">
-<td><code>QJD61-5A-1</code></td>
-<td>Гидравлический подкатной домк…</td>
+<td><code>KQ-PA800</code></td>
+<td>Электрическая таль 12м KINGQU…</td>
 <td>разное</td>
-<td style="text-align: right;">4 296</td>
+<td style="text-align: right;">9 057</td>
+<td style="text-align: center;">×3.6</td>
+<td style="text-align: center;">×3.25</td>
+<td style="text-align: center;">×2.9</td>
+<td style="text-align: center;">×2.9</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>PA-800</code></td>
+<td>Электрическая таль 12м Kingqu…</td>
+<td>разное</td>
+<td style="text-align: right;">8 246</td>
+<td style="text-align: center;">×3.6</td>
+<td style="text-align: center;">×3.25</td>
+<td style="text-align: center;">×2.9</td>
+<td style="text-align: center;">×2.9</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
+<td><code>KQ-DSR-225</code></td>
+<td>Машинка для шлифовки стен KIN…</td>
+<td>разное</td>
+<td style="text-align: right;">7 532</td>
+<td style="text-align: center;">×3.6</td>
+<td style="text-align: center;">×3.25</td>
 <td style="text-align: center;">×2.9</td>
 <td style="text-align: center;">×2.95</td>
-<td style="text-align: center;">×3.05</td>
-<td style="text-align: center;">×3.05</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
 <td><code>QJD60A-1</code></td>
 <td>Гидравлический подкатной домк…</td>
 <td>разное</td>
 <td style="text-align: right;">2 350</td>
-<td style="text-align: center;">×4.1</td>
+<td style="text-align: center;">×4.05</td>
 <td style="text-align: center;">×4.4</td>
 <td style="text-align: center;">×2.9</td>
 <td style="text-align: center;">×2.9</td>
-<td>Ozon: нет в кабинете (статичные ставки)</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB: live тарифы</td>
 </tr>
 <tr class="even">
 <td><code>WIB-10008</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">1 230</td>
-<td style="text-align: center;">×3.4</td>
-<td style="text-align: center;">×3.6</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
 <td style="text-align: center;">×2.9</td>
 <td style="text-align: center;">×2.9</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
+<td><code>RH-2T-6M</code></td>
+<td>Ручная рычажная таль (2т, 6м)…</td>
+<td>разное</td>
+<td style="text-align: right;">5 781</td>
+<td style="text-align: center;">×3.65</td>
+<td style="text-align: center;">×3.3</td>
+<td style="text-align: center;">×2.95</td>
+<td style="text-align: center;">×2.95</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
+<td><code>FLD05</code></td>
+<td>Гидравлическая стяжка KINGQUE…</td>
+<td>разное</td>
+<td style="text-align: right;">5 382</td>
+<td style="text-align: center;">×3.7</td>
+<td style="text-align: center;">×3.35</td>
+<td style="text-align: center;">×2.95</td>
+<td style="text-align: center;">×2.95</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>CH-3T-3M</code></td>
+<td>Таль ручная шестеренная стаци…</td>
+<td>разное</td>
+<td style="text-align: right;">4 856</td>
+<td style="text-align: center;">×3.7</td>
+<td style="text-align: center;">×3.35</td>
+<td style="text-align: center;">×2.95</td>
+<td style="text-align: center;">×2.95</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
 <td><code>0608-201</code></td>
 <td>Тележка подкатная KINGQUEEN 0…</td>
 <td>разное</td>
 <td style="text-align: right;">2 574</td>
-<td style="text-align: center;">×3.25</td>
-<td style="text-align: center;">×3.35</td>
+<td style="text-align: center;">×4.7</td>
+<td style="text-align: center;">×4.45</td>
 <td style="text-align: center;">×2.95</td>
 <td style="text-align: center;">×2.95</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>KQ-HJP03</code></td>
+<td>Подкатной пневматический домк…</td>
+<td>разное</td>
+<td style="text-align: right;">6 444</td>
+<td style="text-align: center;">×3.95</td>
+<td style="text-align: center;">×3.65</td>
+<td style="text-align: center;">×3</td>
+<td style="text-align: center;">×3</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="even">
-<td><code>WIB-20</code></td>
-<td>Трещотка 1/2 72 зуба KINGQUEE…</td>
+<td><code>QJD62A</code></td>
+<td>Гидравлический подкатной домк…</td>
 <td>разное</td>
-<td style="text-align: right;">459</td>
-<td style="text-align: center;">×2.95</td>
-<td style="text-align: center;">×3.25</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td>WB-ФБО лог≈ лог≈</td>
+<td style="text-align: right;">6 139</td>
+<td style="text-align: center;">×4</td>
+<td style="text-align: center;">×3.65</td>
+<td style="text-align: center;">×3</td>
+<td style="text-align: center;">×3</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>KQ-HJP02</code></td>
+<td>Подкатной пневматический домк…</td>
+<td>разное</td>
+<td style="text-align: right;">5 907</td>
+<td style="text-align: center;">×4</td>
+<td style="text-align: center;">×3.7</td>
+<td style="text-align: center;">×3</td>
+<td style="text-align: center;">×3</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
+<td><code>KQ-HJP01</code></td>
+<td>Подкатной пневматический домк…</td>
+<td>разное</td>
+<td style="text-align: right;">5 907</td>
+<td style="text-align: center;">×4</td>
+<td style="text-align: center;">×3.7</td>
+<td style="text-align: center;">×3</td>
+<td style="text-align: center;">×3</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>QJD48B</code></td>
+<td>Гидравлический бутылочный дом…</td>
+<td>разное</td>
+<td style="text-align: right;">5 201</td>
+<td style="text-align: center;">×4.05</td>
+<td style="text-align: center;">×3.75</td>
+<td style="text-align: center;">×3.05</td>
+<td style="text-align: center;">×3</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
+<td><code>RH-1T-6M</code></td>
+<td>Ручная рычажная таль (1т, 6м)…</td>
+<td>разное</td>
+<td style="text-align: right;">4 043</td>
+<td style="text-align: center;">×3.75</td>
+<td style="text-align: center;">×3.4</td>
+<td style="text-align: center;">×3</td>
+<td style="text-align: center;">×3</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
 <td><code>WIB-193</code></td>
 <td>Трещотка 1/2 с набором голово…</td>
 <td>набор</td>
 <td style="text-align: right;">1 048</td>
-<td style="text-align: center;">×3.6</td>
-<td style="text-align: center;">×3.85</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
 <td style="text-align: center;">×3</td>
 <td style="text-align: center;">×3</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="even">
-<td><code>892-1-black-red-mass</code></td>
-<td>Кресло 892-1 цвет черный/крас…</td>
+<td><code>QJD61-5A-1</code></td>
+<td>Гидравлический подкатной домк…</td>
 <td>разное</td>
-<td style="text-align: right;">7 443</td>
+<td style="text-align: right;">4 296</td>
+<td style="text-align: center;">×4.2</td>
+<td style="text-align: center;">×3.9</td>
 <td style="text-align: center;">×3.05</td>
-<td style="text-align: center;">×3.1</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td>WB-ФБО лог≈ лог≈</td>
+<td style="text-align: center;">×3.05</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
 <td><code>QJD61-8A-1</code></td>
@@ -1532,238 +1536,253 @@ Ozon · ФБС — 31 · Ozon · ФБО — 15.</p>
 <td style="text-align: center;">×4.2</td>
 <td style="text-align: center;">×3.05</td>
 <td style="text-align: center;">×3.05</td>
-<td>Ozon: нет в кабинете (статичные ставки)</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB: live тарифы</td>
 </tr>
 <tr class="even">
 <td><code>WIB-192</code></td>
 <td>Трещотка 1/2 с набором голово…</td>
 <td>набор</td>
 <td style="text-align: right;">958</td>
-<td style="text-align: center;">×3.75</td>
-<td style="text-align: center;">×4</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
 <td style="text-align: center;">×3.1</td>
 <td style="text-align: center;">×3.05</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
 <td><code>WIB-10003</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">957</td>
-<td style="text-align: center;">×3.75</td>
-<td style="text-align: center;">×4</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
 <td style="text-align: center;">×3.1</td>
 <td style="text-align: center;">×3.05</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="even">
-<td><code>WIB-22</code></td>
-<td>Трещотка 3/8 72 зуба KINGQUEE…</td>
-<td>разное</td>
-<td style="text-align: right;">367</td>
-<td style="text-align: center;">×3.05</td>
-<td style="text-align: center;">×3.5</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td>WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
 <td><code>09030</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">892</td>
-<td style="text-align: center;">×3.85</td>
-<td style="text-align: center;">×4.15</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
 <td style="text-align: center;">×3.15</td>
 <td style="text-align: center;">×3.1</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>09030-S2</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">892</td>
-<td style="text-align: center;">×3.85</td>
-<td style="text-align: center;">×4.15</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
 <td style="text-align: center;">×3.15</td>
 <td style="text-align: center;">×3.1</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>WIB-10007</code></td>
 <td>Набор инструментов KINGQUEEN …</td>
 <td>набор</td>
 <td style="text-align: right;">826</td>
-<td style="text-align: center;">×4</td>
-<td style="text-align: center;">×4.3</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
 <td style="text-align: center;">×3.2</td>
 <td style="text-align: center;">×3.15</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-SH200</code></td>
-<td>Щетка плоская для УШМ, 200 мм…</td>
-<td>разное</td>
-<td style="text-align: right;">305</td>
-<td style="text-align: center;">×3.15</td>
-<td style="text-align: center;">×3.65</td>
-<td style="text-align: center;">×3.6</td>
-<td style="text-align: center;">×3.7</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
 <td><code>WIB-197</code></td>
 <td>Трещотка 3/8 с набором голово…</td>
 <td>набор</td>
 <td style="text-align: right;">810</td>
-<td style="text-align: center;">×4</td>
-<td style="text-align: center;">×4.3</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
 <td style="text-align: center;">×3.2</td>
 <td style="text-align: center;">×3.2</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="even">
 <td><code>WIB-196</code></td>
 <td>Трещотка 3/8 с набором голово…</td>
 <td>набор</td>
 <td style="text-align: right;">750</td>
-<td style="text-align: center;">×4.15</td>
-<td style="text-align: center;">×4.5</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
 <td style="text-align: center;">×3.25</td>
 <td style="text-align: center;">×3.25</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
-<td><code>KQ-SH175</code></td>
-<td>Щетка плоская для УШМ, 175 мм…</td>
+<td><code>PA-300</code></td>
+<td>Электрическая таль 12м Kingqu…</td>
 <td>разное</td>
-<td style="text-align: right;">274</td>
-<td style="text-align: center;">×3.25</td>
-<td style="text-align: center;">×3.8</td>
-<td style="text-align: center;">×3.75</td>
-<td style="text-align: center;">×3.85</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td style="text-align: right;">6 387</td>
+<td style="text-align: center;">×3.65</td>
+<td style="text-align: center;">×3.3</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td>WB-ФБО лог≈ WB: live тарифы лог≈</td>
 </tr>
 <tr class="even">
+<td><code>KQ286</code></td>
+<td>Гайковерт KINGQUEEN АКБ, 1/2,…</td>
+<td>электро</td>
+<td style="text-align: right;">3 800</td>
+<td style="text-align: center;">×3.65</td>
+<td style="text-align: center;">×3.35</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td>WB-ФБО лог≈ WB: live тарифы лог≈</td>
+</tr>
+<tr class="odd">
 <td><code>TR--S-BB</code></td>
 <td>Кофр (органайзер) в багажник,…</td>
 <td>разное</td>
 <td style="text-align: right;">643</td>
-<td style="text-align: center;">×3.55</td>
-<td style="text-align: center;">×3.85</td>
-<td style="text-align: center;">×3.35</td>
-<td style="text-align: center;">×3.35</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-21</code></td>
-<td>Трещотка 1/4 72 зуба KINGQUEE…</td>
-<td>разное</td>
-<td style="text-align: right;">262</td>
-<td style="text-align: center;">×3.35</td>
-<td style="text-align: center;">×3.95</td>
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">—</td>
-<td>WB-ФБО лог≈ лог≈</td>
+<td style="text-align: center;">×3.35</td>
+<td style="text-align: center;">×3.35</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="even">
-<td><code>KQ-SH150</code></td>
-<td>Щетка плоская для УШМ, 150 мм…</td>
-<td>разное</td>
-<td style="text-align: right;">234</td>
-<td style="text-align: center;">×3.4</td>
-<td style="text-align: center;">×4</td>
-<td style="text-align: center;">×3.95</td>
-<td style="text-align: center;">×4.1</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
 <td><code>WIB-13002</code></td>
 <td>Набор головок Torx 3/8"DR KIN…</td>
 <td>набор</td>
 <td style="text-align: right;">614</td>
-<td style="text-align: center;">×4.6</td>
-<td style="text-align: center;">×5</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
 <td style="text-align: center;">×3.45</td>
 <td style="text-align: center;">×3.45</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>WIB-50</code></td>
-<td>Плоскогубцы KINGQUEEN 200мм W…</td>
-<td>разное</td>
-<td style="text-align: right;">238</td>
-<td style="text-align: center;">×3.45</td>
-<td style="text-align: center;">×4.1</td>
-<td style="text-align: center;">×3.95</td>
-<td style="text-align: center;">×4.1</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
+<td><code>WIB-90001</code></td>
+<td>Набор инструментов KINGQUEEN …</td>
+<td>набор</td>
+<td style="text-align: right;">6 321</td>
+<td style="text-align: center;">×3.8</td>
+<td style="text-align: center;">×3.5</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td>WB-ФБО лог≈ WB: live тарифы лог≈</td>
+</tr>
+<tr class="even">
+<td><code>WIB-80003</code></td>
+<td>Набор инструментов KINGQUEEN …</td>
+<td>набор</td>
+<td style="text-align: right;">6 001</td>
+<td style="text-align: center;">×3.85</td>
+<td style="text-align: center;">×3.5</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td>WB-ФБО лог≈ WB: live тарифы лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>WIB-80001</code></td>
+<td>Набор инструментов KINGQUEEN …</td>
+<td>набор</td>
+<td style="text-align: right;">5 770</td>
+<td style="text-align: center;">×3.85</td>
+<td style="text-align: center;">×3.5</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td>WB-ФБО лог≈ WB: live тарифы лог≈</td>
+</tr>
+<tr class="even">
 <td><code>WIB-195</code></td>
 <td>Трещотка 1/4 с набором голово…</td>
 <td>набор</td>
 <td style="text-align: right;">576</td>
-<td style="text-align: center;">×4.75</td>
+<td style="text-align: center;">—</td>
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">×3.55</td>
 <td style="text-align: center;">×3.5</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>RH-1T-3M</code></td>
+<td>Ручная рычажная таль (1т, 3м)…</td>
+<td>разное</td>
+<td style="text-align: right;">2 882</td>
+<td style="text-align: center;">×3.85</td>
+<td style="text-align: center;">×3.55</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td>WB-ФБО лог≈ WB: live тарифы лог≈</td>
 </tr>
 <tr class="even">
 <td><code>WIB-194</code></td>
 <td>Трещотка 1/4 с набором голово…</td>
 <td>набор</td>
 <td style="text-align: right;">524</td>
-<td style="text-align: center;">×5</td>
+<td style="text-align: center;">—</td>
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">×3.65</td>
 <td style="text-align: center;">×3.6</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
-<td><code>WIB-47</code></td>
-<td>Комбинированные плоскогубцы K…</td>
+<td><code>KQ-SH200</code></td>
+<td>Щетка плоская для УШМ, 200 мм…</td>
 <td>разное</td>
-<td style="text-align: right;">212</td>
-<td style="text-align: center;">×3.6</td>
-<td style="text-align: center;">×4.35</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td>WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>WIB-24</code></td>
-<td>Набор трещоток 72 зуба 1/2 3/…</td>
-<td>набор</td>
-<td style="text-align: right;">1 024</td>
-<td style="text-align: center;">×3.65</td>
-<td style="text-align: center;">×3.9</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td>WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-45</code></td>
-<td>Бокорезы KINGQUEEN 160мм WIB-…</td>
-<td>разное</td>
-<td style="text-align: right;">174</td>
-<td style="text-align: center;">×3.9</td>
-<td style="text-align: center;">×4.75</td>
-<td style="text-align: center;">×4.55</td>
-<td style="text-align: center;">×4.7</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-SH125</code></td>
-<td>Щетка плоская для УШМ, 125 мм…</td>
-<td>разное</td>
-<td style="text-align: right;">153</td>
-<td style="text-align: center;">×3.9</td>
-<td style="text-align: center;">×4.9</td>
+<td style="text-align: right;">305</td>
+<td style="text-align: center;">×4.85</td>
 <td style="text-align: center;">×4.8</td>
+<td style="text-align: center;">×3.6</td>
+<td style="text-align: center;">×3.7</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
+<td><code>KQ-SH175</code></td>
+<td>Щетка плоская для УШМ, 175 мм…</td>
+<td>разное</td>
+<td style="text-align: right;">274</td>
 <td style="text-align: center;">×5</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td style="text-align: center;">×5</td>
+<td style="text-align: center;">×3.75</td>
+<td style="text-align: center;">×3.85</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>WIB-50</code></td>
+<td>Плоскогубцы KINGQUEEN 200мм W…</td>
+<td>разное</td>
+<td style="text-align: right;">238</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">×3.95</td>
+<td style="text-align: center;">×4.1</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
+<td><code>KQ-SH150</code></td>
+<td>Щетка плоская для УШМ, 150 мм…</td>
+<td>разное</td>
+<td style="text-align: right;">234</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">×3.95</td>
+<td style="text-align: center;">×4.1</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
 <td><code>SK-3801</code></td>
@@ -1774,18 +1793,109 @@ Ozon · ФБС — 31 · Ozon · ФБО — 15.</p>
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">×4.05</td>
 <td style="text-align: center;">×4</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="even">
+<td><code>892-1-black-red-mass</code></td>
+<td>Кресло 892-1 цвет черный/крас…</td>
+<td>разное</td>
+<td style="text-align: right;">7 443</td>
+<td style="text-align: center;">×4.4</td>
+<td style="text-align: center;">×4.1</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td>WB-ФБО лог≈ WB: live тарифы лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>WIB-20</code></td>
+<td>Трещотка 1/2 72 зуба KINGQUEE…</td>
+<td>разное</td>
+<td style="text-align: right;">459</td>
+<td style="text-align: center;">×4.45</td>
+<td style="text-align: center;">×4.3</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td>WB-ФБО лог≈ WB: live тарифы лог≈</td>
+</tr>
+<tr class="even">
+<td><code>WIB-45</code></td>
+<td>Бокорезы KINGQUEEN 160мм WIB-…</td>
+<td>разное</td>
+<td style="text-align: right;">174</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">×4.55</td>
+<td style="text-align: center;">×4.7</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>WIB-22</code></td>
+<td>Трещотка 3/8 72 зуба KINGQUEE…</td>
+<td>разное</td>
+<td style="text-align: right;">367</td>
+<td style="text-align: center;">×4.7</td>
+<td style="text-align: center;">×4.6</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td>WB-ФБО лог≈ WB: live тарифы лог≈</td>
+</tr>
+<tr class="even">
+<td><code>KQ-SH125</code></td>
+<td>Щетка плоская для УШМ, 125 мм…</td>
+<td>разное</td>
+<td style="text-align: right;">153</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">×4.8</td>
+<td style="text-align: center;">×5</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>WIB-24</code></td>
+<td>Набор трещоток 72 зуба 1/2 3/…</td>
+<td>набор</td>
+<td style="text-align: right;">1 024</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td>WB-ФБО лог≈ WB: live тарифы лог≈</td>
 </tr>
 <tr class="even">
 <td><code>WIB-23</code></td>
 <td>Набор трещоток 72 зуба 1/2 1/…</td>
 <td>набор</td>
 <td style="text-align: right;">695</td>
-<td style="text-align: center;">×4.3</td>
-<td style="text-align: center;">×4.65</td>
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">—</td>
-<td>WB-ФБО лог≈ лог≈</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td>WB-ФБО лог≈ WB: live тарифы лог≈</td>
+</tr>
+<tr class="odd">
+<td><code>WIB-21</code></td>
+<td>Трещотка 1/4 72 зуба KINGQUEE…</td>
+<td>разное</td>
+<td style="text-align: right;">262</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td>WB-ФБО лог≈ WB: live тарифы лог≈</td>
+</tr>
+<tr class="even">
+<td><code>WIB-47</code></td>
+<td>Комбинированные плоскогубцы K…</td>
+<td>разное</td>
+<td style="text-align: right;">212</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td>WB-ФБО лог≈ WB: live тарифы лог≈</td>
 </tr>
 <tr class="odd">
 <td><code>WIB-44</code></td>
@@ -1796,7 +1906,8 @@ Ozon · ФБС — 31 · Ozon · ФБО — 15.</p>
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">—</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="even">
 <td><code>KQ-SHK75</code></td>
@@ -1807,7 +1918,8 @@ Ozon · ФБС — 31 · Ozon · ФБО — 15.</p>
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">—</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 <tr class="odd">
 <td><code>KQ-SHK65</code></td>
@@ -1818,7 +1930,8 @@ Ozon · ФБС — 31 · Ozon · ФБО — 15.</p>
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">—</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
+<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ WB: live тарифы
+лог≈</td>
 </tr>
 </tbody>
 </table>
@@ -1830,998 +1943,13 @@ Ozon · ФБС — 31 · Ozon · ФБО — 15.</p>
 выше.</p>
 <section id="wb--фбс" class="level3">
 <h3>WB · ФБС</h3>
-<p>🟢/🟡: 39 SKU · 🔴: 94 SKU (цена ×2 = Себес×2).</p>
-<table>
-<thead>
-<tr class="header">
-<th>SKU</th>
-<th>Название</th>
-<th>Кат.</th>
-<th style="text-align: right;">Себес ₽</th>
-<th style="text-align: right;">Цена ₽</th>
-<th style="text-align: right;">Прибыль ₽</th>
-<th style="text-align: right;">Маржа</th>
-<th style="text-align: right;">М×1.6</th>
-<th style="text-align: right;">М×2</th>
-<th style="text-align: right;">М×2.5</th>
-<th style="text-align: right;">М×3</th>
-<th style="text-align: center;">Verdict</th>
-<th>Флаги</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>KQ-289</code></td>
-<td>Гайковерт бесщеточный KINGQUE…</td>
-<td>электро</td>
-<td style="text-align: right;">13 015</td>
-<td style="text-align: right;">26 030</td>
-<td style="text-align: right;">2 270</td>
-<td style="text-align: right;">8.7%</td>
-<td style="text-align: right;">-4.1%</td>
-<td style="text-align: right;">8.7%</td>
-<td style="text-align: right;">19.0%</td>
-<td style="text-align: right;">25.8%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-G21-180D</code></td>
-<td>Шуруповерт KINGQUEEN KQ-G21-1…</td>
-<td>сад/авто·АКБ</td>
-<td style="text-align: right;">7 972</td>
-<td style="text-align: right;">15 945</td>
-<td style="text-align: right;">1 365</td>
-<td style="text-align: right;">8.6%</td>
-<td style="text-align: right;">-4.3%</td>
-<td style="text-align: right;">8.6%</td>
-<td style="text-align: right;">18.8%</td>
-<td style="text-align: right;">25.7%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>BYT-CED05</code></td>
-<td>Шуруповерт бесщеточный BIYOTI…</td>
-<td>сад/авто·АКБ</td>
-<td style="text-align: right;">6 772</td>
-<td style="text-align: right;">13 545</td>
-<td style="text-align: right;">1 125</td>
-<td style="text-align: right;">8.3%</td>
-<td style="text-align: right;">-4.6%</td>
-<td style="text-align: right;">8.3%</td>
-<td style="text-align: right;">18.6%</td>
-<td style="text-align: right;">25.5%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-G21-110D</code></td>
-<td>Шуруповерт KINGQUEEN KQ-G21-1…</td>
-<td>сад/авто·АКБ</td>
-<td style="text-align: right;">6 316</td>
-<td style="text-align: right;">12 633</td>
-<td style="text-align: right;">1 034</td>
-<td style="text-align: right;">8.2%</td>
-<td style="text-align: right;">-4.8%</td>
-<td style="text-align: right;">8.2%</td>
-<td style="text-align: right;">18.5%</td>
-<td style="text-align: right;">25.5%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>KQ-288</code></td>
-<td>Гайковерт бесщеточный KINGQUE…</td>
-<td>электро</td>
-<td style="text-align: right;">7 735</td>
-<td style="text-align: right;">15 470</td>
-<td style="text-align: right;">1 214</td>
-<td style="text-align: right;">7.8%</td>
-<td style="text-align: right;">-5.2%</td>
-<td style="text-align: right;">7.8%</td>
-<td style="text-align: right;">18.3%</td>
-<td style="text-align: right;">25.2%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-G21-80D</code></td>
-<td>Шуруповерт KINGQUEEN KQ-G21-8…</td>
-<td>сад/авто·АКБ</td>
-<td style="text-align: right;">4 410</td>
-<td style="text-align: right;">8 820</td>
-<td style="text-align: right;">653</td>
-<td style="text-align: right;">7.4%</td>
-<td style="text-align: right;">-5.7%</td>
-<td style="text-align: right;">7.4%</td>
-<td style="text-align: right;">17.9%</td>
-<td style="text-align: right;">24.9%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-272</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">9 219</td>
-<td style="text-align: right;">18 438</td>
-<td style="text-align: right;">1 353</td>
-<td style="text-align: right;">7.3%</td>
-<td style="text-align: right;">-6.1%</td>
-<td style="text-align: right;">7.3%</td>
-<td style="text-align: right;">18.1%</td>
-<td style="text-align: right;">25.2%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-TS312</code></td>
-<td>Набор KINGQUEEN 3 пред, 2 АКБ…</td>
-<td>набор</td>
-<td style="text-align: right;">9 080</td>
-<td style="text-align: right;">18 161</td>
-<td style="text-align: right;">1 323</td>
-<td style="text-align: right;">7.3%</td>
-<td style="text-align: right;">-6.1%</td>
-<td style="text-align: right;">7.3%</td>
-<td style="text-align: right;">18.0%</td>
-<td style="text-align: right;">25.2%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>BYT-TS301</code></td>
-<td>Набор BIYOTI 3 предмета (Болг…</td>
-<td>набор</td>
-<td style="text-align: right;">8 860</td>
-<td style="text-align: right;">17 720</td>
-<td style="text-align: right;">1 274</td>
-<td style="text-align: right;">7.2%</td>
-<td style="text-align: right;">-6.3%</td>
-<td style="text-align: right;">7.2%</td>
-<td style="text-align: right;">18.0%</td>
-<td style="text-align: right;">25.1%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-YJ803C</code></td>
-<td>Болгарка (УШМ) бесщеточная KI…</td>
-<td>электро</td>
-<td style="text-align: right;">6 017</td>
-<td style="text-align: right;">12 035</td>
-<td style="text-align: right;">854</td>
-<td style="text-align: right;">7.1%</td>
-<td style="text-align: right;">-6.1%</td>
-<td style="text-align: right;">7.1%</td>
-<td style="text-align: right;">17.7%</td>
-<td style="text-align: right;">24.7%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>KQ-G21-115G</code></td>
-<td>Болгарка (УШМ) KINGQUEEN АКБ,…</td>
-<td>электро</td>
-<td style="text-align: right;">5 885</td>
-<td style="text-align: right;">11 771</td>
-<td style="text-align: right;">827</td>
-<td style="text-align: right;">7.0%</td>
-<td style="text-align: right;">-6.2%</td>
-<td style="text-align: right;">7.0%</td>
-<td style="text-align: right;">17.6%</td>
-<td style="text-align: right;">24.7%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>PA-500-1000-70</code></td>
-<td>Электрическая таль 70м 1000кг…</td>
-<td>разное</td>
-<td style="text-align: right;">17 063</td>
-<td style="text-align: right;">34 127</td>
-<td style="text-align: right;">2 397</td>
-<td style="text-align: right;">7.0%</td>
-<td style="text-align: right;">-5.7%</td>
-<td style="text-align: right;">7.0%</td>
-<td style="text-align: right;">17.2%</td>
-<td style="text-align: right;">24.0%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>KQ-G21-600W</code></td>
-<td>Гайковерт KINGQUEEN АКБ 600 N…</td>
-<td>электро</td>
-<td style="text-align: right;">5 496</td>
-<td style="text-align: right;">10 992</td>
-<td style="text-align: right;">767</td>
-<td style="text-align: right;">7.0%</td>
-<td style="text-align: right;">-6.3%</td>
-<td style="text-align: right;">7.0%</td>
-<td style="text-align: right;">17.6%</td>
-<td style="text-align: right;">24.6%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>WIB-273</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">7 956</td>
-<td style="text-align: right;">15 912</td>
-<td style="text-align: right;">1 075</td>
-<td style="text-align: right;">6.8%</td>
-<td style="text-align: right;">-6.8%</td>
-<td style="text-align: right;">6.8%</td>
-<td style="text-align: right;">17.6%</td>
-<td style="text-align: right;">24.8%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-283</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">7 932</td>
-<td style="text-align: right;">15 864</td>
-<td style="text-align: right;">1 070</td>
-<td style="text-align: right;">6.7%</td>
-<td style="text-align: right;">-6.8%</td>
-<td style="text-align: right;">6.7%</td>
-<td style="text-align: right;">17.6%</td>
-<td style="text-align: right;">24.8%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-TS313</code></td>
-<td>Набор KINGQUEEN 3 пред, 2 АКБ…</td>
-<td>набор</td>
-<td style="text-align: right;">7 788</td>
-<td style="text-align: right;">15 575</td>
-<td style="text-align: right;">1 038</td>
-<td style="text-align: right;">6.7%</td>
-<td style="text-align: right;">-6.9%</td>
-<td style="text-align: right;">6.7%</td>
-<td style="text-align: right;">17.5%</td>
-<td style="text-align: right;">24.8%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-90013</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">7 627</td>
-<td style="text-align: right;">15 253</td>
-<td style="text-align: right;">1 003</td>
-<td style="text-align: right;">6.6%</td>
-<td style="text-align: right;">-7.0%</td>
-<td style="text-align: right;">6.6%</td>
-<td style="text-align: right;">17.5%</td>
-<td style="text-align: right;">24.7%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>BYT-CEW01</code></td>
-<td>Гайковерт BIYOTI АКБ 350 N/m …</td>
-<td>электро</td>
-<td style="text-align: right;">4 747</td>
-<td style="text-align: right;">9 495</td>
-<td style="text-align: right;">617</td>
-<td style="text-align: right;">6.5%</td>
-<td style="text-align: right;">-6.9%</td>
-<td style="text-align: right;">6.5%</td>
-<td style="text-align: right;">17.2%</td>
-<td style="text-align: right;">24.3%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-282</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">7 345</td>
-<td style="text-align: right;">14 689</td>
-<td style="text-align: right;">941</td>
-<td style="text-align: right;">6.4%</td>
-<td style="text-align: right;">-7.2%</td>
-<td style="text-align: right;">6.4%</td>
-<td style="text-align: right;">17.3%</td>
-<td style="text-align: right;">24.6%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-PA800</code></td>
-<td>Электрическая таль 12м KINGQU…</td>
-<td>разное</td>
-<td style="text-align: right;">9 057</td>
-<td style="text-align: right;">18 113</td>
-<td style="text-align: right;">1 116</td>
-<td style="text-align: right;">6.2%</td>
-<td style="text-align: right;">-6.8%</td>
-<td style="text-align: right;">6.2%</td>
-<td style="text-align: right;">16.5%</td>
-<td style="text-align: right;">23.4%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>PA-800</code></td>
-<td>Электрическая таль 12м Kingqu…</td>
-<td>разное</td>
-<td style="text-align: right;">8 246</td>
-<td style="text-align: right;">16 492</td>
-<td style="text-align: right;">987</td>
-<td style="text-align: right;">6.0%</td>
-<td style="text-align: right;">-7.0%</td>
-<td style="text-align: right;">6.0%</td>
-<td style="text-align: right;">16.4%</td>
-<td style="text-align: right;">23.3%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-TS012</code></td>
-<td>Набор KINGQUEEN 2 пред, 2 АКБ…</td>
-<td>набор</td>
-<td style="text-align: right;">6 686</td>
-<td style="text-align: right;">13 373</td>
-<td style="text-align: right;">796</td>
-<td style="text-align: right;">6.0%</td>
-<td style="text-align: right;">-7.8%</td>
-<td style="text-align: right;">6.0%</td>
-<td style="text-align: right;">17.0%</td>
-<td style="text-align: right;">24.3%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>KQ-TS212</code></td>
-<td>Набор KINGQUEEN 2 предмета (Ш…</td>
-<td>набор</td>
-<td style="text-align: right;">6 621</td>
-<td style="text-align: right;">13 242</td>
-<td style="text-align: right;">782</td>
-<td style="text-align: right;">5.9%</td>
-<td style="text-align: right;">-7.9%</td>
-<td style="text-align: right;">5.9%</td>
-<td style="text-align: right;">16.9%</td>
-<td style="text-align: right;">24.3%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-903D</code></td>
-<td>Шуруповерт бесщеточный ударны…</td>
-<td>сад/авто·АКБ</td>
-<td style="text-align: right;">2 743</td>
-<td style="text-align: right;">5 485</td>
-<td style="text-align: right;">319</td>
-<td style="text-align: right;">5.8%</td>
-<td style="text-align: right;">-7.7%</td>
-<td style="text-align: right;">5.8%</td>
-<td style="text-align: right;">16.7%</td>
-<td style="text-align: right;">23.9%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>KQ-TS211</code></td>
-<td>Набор KINGQUEEN 2 предмета (Г…</td>
-<td>набор</td>
-<td style="text-align: right;">6 504</td>
-<td style="text-align: right;">13 008</td>
-<td style="text-align: right;">756</td>
-<td style="text-align: right;">5.8%</td>
-<td style="text-align: right;">-8.0%</td>
-<td style="text-align: right;">5.8%</td>
-<td style="text-align: right;">16.8%</td>
-<td style="text-align: right;">24.2%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-DSR-225</code></td>
-<td>Машинка для шлифовки стен KIN…</td>
-<td>разное</td>
-<td style="text-align: right;">7 532</td>
-<td style="text-align: right;">15 064</td>
-<td style="text-align: right;">872</td>
-<td style="text-align: right;">5.8%</td>
-<td style="text-align: right;">-7.3%</td>
-<td style="text-align: right;">5.8%</td>
-<td style="text-align: right;">16.2%</td>
-<td style="text-align: right;">23.2%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-90001</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">6 321</td>
-<td style="text-align: right;">12 643</td>
-<td style="text-align: right;">716</td>
-<td style="text-align: right;">5.7%</td>
-<td style="text-align: right;">-8.2%</td>
-<td style="text-align: right;">5.7%</td>
-<td style="text-align: right;">16.7%</td>
-<td style="text-align: right;">24.1%</td>
-<td style="text-align: center;">🟡</td>
-<td>WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>WIB-257</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">6 319</td>
-<td style="text-align: right;">12 637</td>
-<td style="text-align: right;">715</td>
-<td style="text-align: right;">5.7%</td>
-<td style="text-align: right;">-8.2%</td>
-<td style="text-align: right;">5.7%</td>
-<td style="text-align: right;">16.7%</td>
-<td style="text-align: right;">24.1%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>KQ286</code></td>
-<td>Гайковерт KINGQUEEN АКБ, 1/2,…</td>
-<td>электро</td>
-<td style="text-align: right;">3 800</td>
-<td style="text-align: right;">7 600</td>
-<td style="text-align: right;">427</td>
-<td style="text-align: right;">5.6%</td>
-<td style="text-align: right;">-8.0%</td>
-<td style="text-align: right;">5.6%</td>
-<td style="text-align: right;">16.5%</td>
-<td style="text-align: right;">23.7%</td>
-<td style="text-align: center;">🟡</td>
-<td>WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>WIB-294</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">6 233</td>
-<td style="text-align: right;">12 466</td>
-<td style="text-align: right;">696</td>
-<td style="text-align: right;">5.6%</td>
-<td style="text-align: right;">-8.3%</td>
-<td style="text-align: right;">5.6%</td>
-<td style="text-align: right;">16.7%</td>
-<td style="text-align: right;">24.1%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-90014</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">6 221</td>
-<td style="text-align: right;">12 441</td>
-<td style="text-align: right;">693</td>
-<td style="text-align: right;">5.6%</td>
-<td style="text-align: right;">-8.3%</td>
-<td style="text-align: right;">5.6%</td>
-<td style="text-align: right;">16.7%</td>
-<td style="text-align: right;">24.0%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>WIB-90012</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">6 104</td>
-<td style="text-align: right;">12 207</td>
-<td style="text-align: right;">668</td>
-<td style="text-align: right;">5.5%</td>
-<td style="text-align: right;">-8.4%</td>
-<td style="text-align: right;">5.5%</td>
-<td style="text-align: right;">16.6%</td>
-<td style="text-align: right;">24.0%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>PA-300</code></td>
-<td>Электрическая таль 12м Kingqu…</td>
-<td>разное</td>
-<td style="text-align: right;">6 387</td>
-<td style="text-align: right;">12 774</td>
-<td style="text-align: right;">689</td>
-<td style="text-align: right;">5.4%</td>
-<td style="text-align: right;">-7.8%</td>
-<td style="text-align: right;">5.4%</td>
-<td style="text-align: right;">15.9%</td>
-<td style="text-align: right;">22.9%</td>
-<td style="text-align: center;">🟡</td>
-<td>WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>WIB-287</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">6 019</td>
-<td style="text-align: right;">12 039</td>
-<td style="text-align: right;">649</td>
-<td style="text-align: right;">5.4%</td>
-<td style="text-align: right;">-8.5%</td>
-<td style="text-align: right;">5.4%</td>
-<td style="text-align: right;">16.5%</td>
-<td style="text-align: right;">23.9%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-80003</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">6 001</td>
-<td style="text-align: right;">12 001</td>
-<td style="text-align: right;">645</td>
-<td style="text-align: right;">5.4%</td>
-<td style="text-align: right;">-8.5%</td>
-<td style="text-align: right;">5.4%</td>
-<td style="text-align: right;">16.5%</td>
-<td style="text-align: right;">23.9%</td>
-<td style="text-align: center;">🟡</td>
-<td>WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>12PC202-P</code></td>
-<td>Ключи комбинированные со встр…</td>
-<td>разное</td>
-<td style="text-align: right;">2 147</td>
-<td style="text-align: right;">4 294</td>
-<td style="text-align: right;">229</td>
-<td style="text-align: right;">5.3%</td>
-<td style="text-align: right;">-7.8%</td>
-<td style="text-align: right;">5.3%</td>
-<td style="text-align: right;">15.9%</td>
-<td style="text-align: right;">22.9%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-80001</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">5 770</td>
-<td style="text-align: right;">11 541</td>
-<td style="text-align: right;">594</td>
-<td style="text-align: right;">5.2%</td>
-<td style="text-align: right;">-8.8%</td>
-<td style="text-align: right;">5.2%</td>
-<td style="text-align: right;">16.3%</td>
-<td style="text-align: right;">23.8%</td>
-<td style="text-align: center;">🟡</td>
-<td>WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>RH-2T-6M</code></td>
-<td>Ручная рычажная таль (2т, 6м)…</td>
-<td>разное</td>
-<td style="text-align: right;">5 781</td>
-<td style="text-align: right;">11 563</td>
-<td style="text-align: right;">592</td>
-<td style="text-align: right;">5.1%</td>
-<td style="text-align: right;">-8.1%</td>
-<td style="text-align: right;">5.1%</td>
-<td style="text-align: right;">15.7%</td>
-<td style="text-align: right;">22.7%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-297</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">5 646</td>
-<td style="text-align: right;">11 293</td>
-<td style="text-align: right;">567</td>
-<td style="text-align: right;">5.0%</td>
-<td style="text-align: right;">-9.0%</td>
-<td style="text-align: right;">5.0%</td>
-<td style="text-align: right;">16.2%</td>
-<td style="text-align: right;">23.7%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-</tbody>
-</table>
+<p>🟢/🟡: 0 SKU · 🔴: 133 SKU (цена ×2 = Себес×2).</p>
+<p><em>Нет SKU выше 🔴 при этой наценке.</em></p>
 </section>
 <section id="wb--фбо" class="level3">
 <h3>WB · ФБО</h3>
-<p>🟢/🟡: 24 SKU · 🔴: 109 SKU (цена ×2 = Себес×2).</p>
-<table>
-<thead>
-<tr class="header">
-<th>SKU</th>
-<th>Название</th>
-<th>Кат.</th>
-<th style="text-align: right;">Себес ₽</th>
-<th style="text-align: right;">Цена ₽</th>
-<th style="text-align: right;">Прибыль ₽</th>
-<th style="text-align: right;">Маржа</th>
-<th style="text-align: right;">М×1.6</th>
-<th style="text-align: right;">М×2</th>
-<th style="text-align: right;">М×2.5</th>
-<th style="text-align: right;">М×3</th>
-<th style="text-align: center;">Verdict</th>
-<th>Флаги</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>KQ-289</code></td>
-<td>Гайковерт бесщеточный KINGQUE…</td>
-<td>электро</td>
-<td style="text-align: right;">13 015</td>
-<td style="text-align: right;">26 030</td>
-<td style="text-align: right;">2 185</td>
-<td style="text-align: right;">8.4%</td>
-<td style="text-align: right;">-4.5%</td>
-<td style="text-align: right;">8.4%</td>
-<td style="text-align: right;">18.7%</td>
-<td style="text-align: right;">25.6%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-G21-180D</code></td>
-<td>Шуруповерт KINGQUEEN KQ-G21-1…</td>
-<td>сад/авто·АКБ</td>
-<td style="text-align: right;">7 972</td>
-<td style="text-align: right;">15 945</td>
-<td style="text-align: right;">1 290</td>
-<td style="text-align: right;">8.1%</td>
-<td style="text-align: right;">-4.9%</td>
-<td style="text-align: right;">8.1%</td>
-<td style="text-align: right;">18.5%</td>
-<td style="text-align: right;">25.4%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>BYT-CED05</code></td>
-<td>Шуруповерт бесщеточный BIYOTI…</td>
-<td>сад/авто·АКБ</td>
-<td style="text-align: right;">6 772</td>
-<td style="text-align: right;">13 545</td>
-<td style="text-align: right;">1 050</td>
-<td style="text-align: right;">7.8%</td>
-<td style="text-align: right;">-5.3%</td>
-<td style="text-align: right;">7.8%</td>
-<td style="text-align: right;">18.2%</td>
-<td style="text-align: right;">25.2%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-G21-110D</code></td>
-<td>Шуруповерт KINGQUEEN KQ-G21-1…</td>
-<td>сад/авто·АКБ</td>
-<td style="text-align: right;">6 316</td>
-<td style="text-align: right;">12 633</td>
-<td style="text-align: right;">959</td>
-<td style="text-align: right;">7.6%</td>
-<td style="text-align: right;">-5.5%</td>
-<td style="text-align: right;">7.6%</td>
-<td style="text-align: right;">18.1%</td>
-<td style="text-align: right;">25.1%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>KQ-288</code></td>
-<td>Гайковерт бесщеточный KINGQUE…</td>
-<td>электро</td>
-<td style="text-align: right;">7 735</td>
-<td style="text-align: right;">15 470</td>
-<td style="text-align: right;">1 129</td>
-<td style="text-align: right;">7.3%</td>
-<td style="text-align: right;">-5.9%</td>
-<td style="text-align: right;">7.3%</td>
-<td style="text-align: right;">17.8%</td>
-<td style="text-align: right;">24.9%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>PA-500-1000-70</code></td>
-<td>Электрическая таль 70м 1000кг…</td>
-<td>разное</td>
-<td style="text-align: right;">17 063</td>
-<td style="text-align: right;">34 127</td>
-<td style="text-align: right;">2 312</td>
-<td style="text-align: right;">6.8%</td>
-<td style="text-align: right;">-6.0%</td>
-<td style="text-align: right;">6.8%</td>
-<td style="text-align: right;">17.0%</td>
-<td style="text-align: right;">23.8%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-272</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">9 219</td>
-<td style="text-align: right;">18 438</td>
-<td style="text-align: right;">1 237</td>
-<td style="text-align: right;">6.7%</td>
-<td style="text-align: right;">-6.9%</td>
-<td style="text-align: right;">6.7%</td>
-<td style="text-align: right;">17.6%</td>
-<td style="text-align: right;">24.8%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-TS312</code></td>
-<td>Набор KINGQUEEN 3 пред, 2 АКБ…</td>
-<td>набор</td>
-<td style="text-align: right;">9 080</td>
-<td style="text-align: right;">18 161</td>
-<td style="text-align: right;">1 206</td>
-<td style="text-align: right;">6.6%</td>
-<td style="text-align: right;">-6.9%</td>
-<td style="text-align: right;">6.6%</td>
-<td style="text-align: right;">17.5%</td>
-<td style="text-align: right;">24.8%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>KQ-G21-80D</code></td>
-<td>Шуруповерт KINGQUEEN KQ-G21-8…</td>
-<td>сад/авто·АКБ</td>
-<td style="text-align: right;">4 410</td>
-<td style="text-align: right;">8 820</td>
-<td style="text-align: right;">578</td>
-<td style="text-align: right;">6.5%</td>
-<td style="text-align: right;">-6.8%</td>
-<td style="text-align: right;">6.5%</td>
-<td style="text-align: right;">17.2%</td>
-<td style="text-align: right;">24.4%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>BYT-TS301</code></td>
-<td>Набор BIYOTI 3 предмета (Болг…</td>
-<td>набор</td>
-<td style="text-align: right;">8 860</td>
-<td style="text-align: right;">17 720</td>
-<td style="text-align: right;">1 158</td>
-<td style="text-align: right;">6.5%</td>
-<td style="text-align: right;">-7.1%</td>
-<td style="text-align: right;">6.5%</td>
-<td style="text-align: right;">17.4%</td>
-<td style="text-align: right;">24.7%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>KQ-YJ803C</code></td>
-<td>Болгарка (УШМ) бесщеточная KI…</td>
-<td>электро</td>
-<td style="text-align: right;">6 017</td>
-<td style="text-align: right;">12 035</td>
-<td style="text-align: right;">767</td>
-<td style="text-align: right;">6.4%</td>
-<td style="text-align: right;">-7.0%</td>
-<td style="text-align: right;">6.4%</td>
-<td style="text-align: right;">17.1%</td>
-<td style="text-align: right;">24.3%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-G21-115G</code></td>
-<td>Болгарка (УШМ) KINGQUEEN АКБ,…</td>
-<td>электро</td>
-<td style="text-align: right;">5 885</td>
-<td style="text-align: right;">11 771</td>
-<td style="text-align: right;">741</td>
-<td style="text-align: right;">6.3%</td>
-<td style="text-align: right;">-7.1%</td>
-<td style="text-align: right;">6.3%</td>
-<td style="text-align: right;">17.0%</td>
-<td style="text-align: right;">24.2%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>KQ-G21-600W</code></td>
-<td>Гайковерт KINGQUEEN АКБ 600 N…</td>
-<td>электро</td>
-<td style="text-align: right;">5 496</td>
-<td style="text-align: right;">10 992</td>
-<td style="text-align: right;">681</td>
-<td style="text-align: right;">6.2%</td>
-<td style="text-align: right;">-7.3%</td>
-<td style="text-align: right;">6.2%</td>
-<td style="text-align: right;">17.0%</td>
-<td style="text-align: right;">24.1%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>WIB-273</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">7 956</td>
-<td style="text-align: right;">15 912</td>
-<td style="text-align: right;">959</td>
-<td style="text-align: right;">6.0%</td>
-<td style="text-align: right;">-7.7%</td>
-<td style="text-align: right;">6.0%</td>
-<td style="text-align: right;">17.0%</td>
-<td style="text-align: right;">24.4%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-283</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">7 932</td>
-<td style="text-align: right;">15 864</td>
-<td style="text-align: right;">953</td>
-<td style="text-align: right;">6.0%</td>
-<td style="text-align: right;">-7.7%</td>
-<td style="text-align: right;">6.0%</td>
-<td style="text-align: right;">17.0%</td>
-<td style="text-align: right;">24.3%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-TS313</code></td>
-<td>Набор KINGQUEEN 3 пред, 2 АКБ…</td>
-<td>набор</td>
-<td style="text-align: right;">7 788</td>
-<td style="text-align: right;">15 575</td>
-<td style="text-align: right;">922</td>
-<td style="text-align: right;">5.9%</td>
-<td style="text-align: right;">-7.9%</td>
-<td style="text-align: right;">5.9%</td>
-<td style="text-align: right;">16.9%</td>
-<td style="text-align: right;">24.3%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-90013</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">7 627</td>
-<td style="text-align: right;">15 253</td>
-<td style="text-align: right;">886</td>
-<td style="text-align: right;">5.8%</td>
-<td style="text-align: right;">-8.0%</td>
-<td style="text-align: right;">5.8%</td>
-<td style="text-align: right;">16.8%</td>
-<td style="text-align: right;">24.2%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-PA800</code></td>
-<td>Электрическая таль 12м KINGQU…</td>
-<td>разное</td>
-<td style="text-align: right;">9 057</td>
-<td style="text-align: right;">18 113</td>
-<td style="text-align: right;">1 031</td>
-<td style="text-align: right;">5.7%</td>
-<td style="text-align: right;">-7.4%</td>
-<td style="text-align: right;">5.7%</td>
-<td style="text-align: right;">16.2%</td>
-<td style="text-align: right;">23.1%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>WIB-282</code></td>
-<td>Набор инструментов KINGQUEEN …</td>
-<td>набор</td>
-<td style="text-align: right;">7 345</td>
-<td style="text-align: right;">14 689</td>
-<td style="text-align: right;">824</td>
-<td style="text-align: right;">5.6%</td>
-<td style="text-align: right;">-8.2%</td>
-<td style="text-align: right;">5.6%</td>
-<td style="text-align: right;">16.7%</td>
-<td style="text-align: right;">24.1%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>BYT-CEW01</code></td>
-<td>Гайковерт BIYOTI АКБ 350 N/m …</td>
-<td>электро</td>
-<td style="text-align: right;">4 747</td>
-<td style="text-align: right;">9 495</td>
-<td style="text-align: right;">531</td>
-<td style="text-align: right;">5.6%</td>
-<td style="text-align: right;">-8.0%</td>
-<td style="text-align: right;">5.6%</td>
-<td style="text-align: right;">16.5%</td>
-<td style="text-align: right;">23.7%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>PA-800</code></td>
-<td>Электрическая таль 12м Kingqu…</td>
-<td>разное</td>
-<td style="text-align: right;">8 246</td>
-<td style="text-align: right;">16 492</td>
-<td style="text-align: right;">901</td>
-<td style="text-align: right;">5.5%</td>
-<td style="text-align: right;">-7.7%</td>
-<td style="text-align: right;">5.5%</td>
-<td style="text-align: right;">16.0%</td>
-<td style="text-align: right;">23.0%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-DSR-225</code></td>
-<td>Машинка для шлифовки стен KIN…</td>
-<td>разное</td>
-<td style="text-align: right;">7 532</td>
-<td style="text-align: right;">15 064</td>
-<td style="text-align: right;">787</td>
-<td style="text-align: right;">5.2%</td>
-<td style="text-align: right;">-8.0%</td>
-<td style="text-align: right;">5.2%</td>
-<td style="text-align: right;">15.8%</td>
-<td style="text-align: right;">22.8%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="odd">
-<td><code>KQ-TS012</code></td>
-<td>Набор KINGQUEEN 2 пред, 2 АКБ…</td>
-<td>набор</td>
-<td style="text-align: right;">6 686</td>
-<td style="text-align: right;">13 373</td>
-<td style="text-align: right;">679</td>
-<td style="text-align: right;">5.1%</td>
-<td style="text-align: right;">-8.9%</td>
-<td style="text-align: right;">5.1%</td>
-<td style="text-align: right;">16.3%</td>
-<td style="text-align: right;">23.7%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-<tr class="even">
-<td><code>KQ-TS212</code></td>
-<td>Набор KINGQUEEN 2 предмета (Ш…</td>
-<td>набор</td>
-<td style="text-align: right;">6 621</td>
-<td style="text-align: right;">13 242</td>
-<td style="text-align: right;">665</td>
-<td style="text-align: right;">5.0%</td>
-<td style="text-align: right;">-9.0%</td>
-<td style="text-align: right;">5.0%</td>
-<td style="text-align: right;">16.2%</td>
-<td style="text-align: right;">23.7%</td>
-<td style="text-align: center;">🟡</td>
-<td>Ozon: нет в кабинете (статичные ставки) WB-ФБО лог≈ лог≈</td>
-</tr>
-</tbody>
-</table>
+<p>🟢/🟡: 0 SKU · 🔴: 133 SKU (цена ×2 = Себес×2).</p>
+<p><em>Нет SKU выше 🔴 при этой наценке.</em></p>
 </section>
 <section id="ozon--фбс" class="level3">
 <h3>Ozon · ФБС</h3>
@@ -2899,7 +2027,7 @@ class="level3">
 </tr>
 <tr class="odd">
 <td>Логистика ИТОГО</td>
-<td style="text-align: right;">572</td>
+<td style="text-align: right;">535</td>
 <td style="text-align: right;">631</td>
 <td style="text-align: right;">192</td>
 <td style="text-align: right;">171</td>
@@ -2962,28 +2090,28 @@ class="level3">
 </tr>
 <tr class="even">
 <td><strong>Сумма расходов</strong></td>
-<td style="text-align: right;"><strong>17 328</strong></td>
+<td style="text-align: right;"><strong>17 291</strong></td>
 <td style="text-align: right;"><strong>17 587</strong></td>
 <td style="text-align: right;"><strong>15 535</strong></td>
 <td style="text-align: right;"><strong>15 531</strong></td>
 </tr>
 <tr class="odd">
 <td><strong>Прибыль / ед.</strong></td>
-<td style="text-align: right;"><strong>-1 500</strong></td>
+<td style="text-align: right;"><strong>-1 463</strong></td>
 <td style="text-align: right;"><strong>-1 759</strong></td>
 <td style="text-align: right;"><strong>293</strong></td>
 <td style="text-align: right;"><strong>297</strong></td>
 </tr>
 <tr class="even">
 <td><strong>Маржа</strong></td>
-<td style="text-align: right;"><strong>-9.5%</strong></td>
+<td style="text-align: right;"><strong>-9.2%</strong></td>
 <td style="text-align: right;"><strong>-11.1%</strong></td>
 <td style="text-align: right;"><strong>1.9%</strong></td>
 <td style="text-align: right;"><strong>1.9%</strong></td>
 </tr>
 <tr class="odd">
 <td>Рентабельность к Себесу</td>
-<td style="text-align: right;">-19.0%</td>
+<td style="text-align: right;">-18.5%</td>
 <td style="text-align: right;">-22.2%</td>
 <td style="text-align: right;">3.7%</td>
 <td style="text-align: right;">3.8%</td>
@@ -3085,7 +2213,7 @@ class="level3">
 </tr>
 <tr class="odd">
 <td>Логистика ИТОГО</td>
-<td style="text-align: right;">576</td>
+<td style="text-align: right;">535</td>
 <td style="text-align: right;">793</td>
 <td style="text-align: right;">202</td>
 <td style="text-align: right;">179</td>
@@ -3148,28 +2276,28 @@ class="level3">
 </tr>
 <tr class="even">
 <td><strong>Сумма расходов</strong></td>
-<td style="text-align: right;"><strong>8 723</strong></td>
+<td style="text-align: right;"><strong>8 683</strong></td>
 <td style="text-align: right;"><strong>8 971</strong></td>
 <td style="text-align: right;"><strong>7 674</strong></td>
 <td style="text-align: right;"><strong>7 668</strong></td>
 </tr>
 <tr class="odd">
 <td><strong>Прибыль / ед.</strong></td>
-<td style="text-align: right;"><strong>-1 052</strong></td>
+<td style="text-align: right;"><strong>-1 011</strong></td>
 <td style="text-align: right;"><strong>-1 299</strong></td>
 <td style="text-align: right;"><strong>-3</strong></td>
 <td style="text-align: right;"><strong>4</strong></td>
 </tr>
 <tr class="even">
 <td><strong>Маржа</strong></td>
-<td style="text-align: right;"><strong>-13.7%</strong></td>
+<td style="text-align: right;"><strong>-13.2%</strong></td>
 <td style="text-align: right;"><strong>-16.9%</strong></td>
 <td style="text-align: right;"><strong>-0.0%</strong></td>
 <td style="text-align: right;"><strong>0.1%</strong></td>
 </tr>
 <tr class="odd">
 <td>Рентабельность к Себесу</td>
-<td style="text-align: right;">-27.4%</td>
+<td style="text-align: right;">-26.4%</td>
 <td style="text-align: right;">-33.9%</td>
 <td style="text-align: right;">-0.1%</td>
 <td style="text-align: right;">0.1%</td>
@@ -3257,8 +2385,8 @@ Ozon-кабинет: нет · цена ×2 = 26 030 ₽</p>
 </tr>
 <tr class="odd">
 <td>Комиссия</td>
-<td style="text-align: right;">19.0% = 4 946</td>
-<td style="text-align: right;">19.0% = 4 946</td>
+<td style="text-align: right;">34.0% = 8 850</td>
+<td style="text-align: right;">30.5% = 7 939</td>
 <td style="text-align: right;">23.0% = 5 987</td>
 <td style="text-align: right;">23.0% = 5 987</td>
 </tr>
@@ -3271,7 +2399,7 @@ Ozon-кабинет: нет · цена ×2 = 26 030 ₽</p>
 </tr>
 <tr class="odd">
 <td>Логистика ИТОГО</td>
-<td style="text-align: right;">283</td>
+<td style="text-align: right;">274</td>
 <td style="text-align: right;">338</td>
 <td style="text-align: right;">149</td>
 <td style="text-align: right;">139</td>
@@ -3334,29 +2462,29 @@ Ozon-кабинет: нет · цена ×2 = 26 030 ₽</p>
 </tr>
 <tr class="even">
 <td><strong>Сумма расходов</strong></td>
-<td style="text-align: right;"><strong>23 759</strong></td>
-<td style="text-align: right;"><strong>23 845</strong></td>
+<td style="text-align: right;"><strong>27 655</strong></td>
+<td style="text-align: right;"><strong>26 838</strong></td>
 <td style="text-align: right;"><strong>25 076</strong></td>
 <td style="text-align: right;"><strong>25 082</strong></td>
 </tr>
 <tr class="odd">
 <td><strong>Прибыль / ед.</strong></td>
-<td style="text-align: right;"><strong>2 270</strong></td>
-<td style="text-align: right;"><strong>2 185</strong></td>
+<td style="text-align: right;"><strong>-1 625</strong></td>
+<td style="text-align: right;"><strong>-809</strong></td>
 <td style="text-align: right;"><strong>953</strong></td>
 <td style="text-align: right;"><strong>947</strong></td>
 </tr>
 <tr class="even">
 <td><strong>Маржа</strong></td>
-<td style="text-align: right;"><strong>8.7%</strong></td>
-<td style="text-align: right;"><strong>8.4%</strong></td>
+<td style="text-align: right;"><strong>-6.2%</strong></td>
+<td style="text-align: right;"><strong>-3.1%</strong></td>
 <td style="text-align: right;"><strong>3.7%</strong></td>
 <td style="text-align: right;"><strong>3.6%</strong></td>
 </tr>
 <tr class="odd">
 <td>Рентабельность к Себесу</td>
-<td style="text-align: right;">17.4%</td>
-<td style="text-align: right;">16.8%</td>
+<td style="text-align: right;">-12.5%</td>
+<td style="text-align: right;">-6.2%</td>
 <td style="text-align: right;">7.3%</td>
 <td style="text-align: right;">7.3%</td>
 </tr>
@@ -3369,20 +2497,19 @@ Ozon-кабинет: нет · цена ×2 = 26 030 ₽</p>
 </tr>
 <tr class="odd">
 <td>Verdict</td>
-<td style="text-align: right;">🟡 YELLOW</td>
-<td style="text-align: right;">🟡 YELLOW</td>
+<td style="text-align: right;">🔴 RED</td>
+<td style="text-align: right;">🔴 RED</td>
 <td style="text-align: right;">🔴 RED</td>
 <td style="text-align: right;">🔴 RED</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li><em>WB · ФБС:</em> WB-ФБС: комиссия категории — публичная оценка,
-требует проверки в LK; маржа 8.7% в коридоре 5-15% — рабочий минимум,
-после СПП реальная +5-15%</li>
+<li><em>WB · ФБС:</em> убыток на единицу — закупка/логистика съедает
+выручку</li>
 <li><em>WB · ФБО:</em> WB-ФБО логистика аппроксимирована (SKU вне
-вкладки «юнит ФБО»); маржа 8.4% в коридоре 5-15% — рабочий минимум,
-после СПП реальная +5-15%</li>
+вкладки «юнит ФБО»); убыток на единицу — закупка/логистика съедает
+выручку</li>
 <li><em>Ozon · ФБС:</em> Ozon: ставки из статичной шкалы — live-данных
 кабинета (ozon-prices.json) нет; точная комиссия — в LK / через фидер;
 Ozon-ФБС «обработка отправления» — дефолт-плейсхолдер ~15 ₽; точная из
@@ -3444,8 +2571,8 @@ Ozon-кабинет: нет · цена ×2 = 15 945 ₽</p>
 </tr>
 <tr class="odd">
 <td>Комиссия</td>
-<td style="text-align: right;">19.0% = 3 030</td>
-<td style="text-align: right;">19.0% = 3 030</td>
+<td style="text-align: right;">35.0% = 5 581</td>
+<td style="text-align: right;">31.5% = 5 023</td>
 <td style="text-align: right;">25.0% = 3 986</td>
 <td style="text-align: right;">25.0% = 3 986</td>
 </tr>
@@ -3458,7 +2585,7 @@ Ozon-кабинет: нет · цена ×2 = 15 945 ₽</p>
 </tr>
 <tr class="odd">
 <td>Логистика ИТОГО</td>
-<td style="text-align: right;">179</td>
+<td style="text-align: right;">182</td>
 <td style="text-align: right;">224</td>
 <td style="text-align: right;">120</td>
 <td style="text-align: right;">124</td>
@@ -3521,29 +2648,29 @@ Ozon-кабинет: нет · цена ×2 = 15 945 ₽</p>
 </tr>
 <tr class="even">
 <td><strong>Сумма расходов</strong></td>
-<td style="text-align: right;"><strong>14 580</strong></td>
-<td style="text-align: right;"><strong>14 655</strong></td>
+<td style="text-align: right;"><strong>17 134</strong></td>
+<td style="text-align: right;"><strong>16 648</strong></td>
 <td style="text-align: right;"><strong>15 735</strong></td>
 <td style="text-align: right;"><strong>15 755</strong></td>
 </tr>
 <tr class="odd">
 <td><strong>Прибыль / ед.</strong></td>
-<td style="text-align: right;"><strong>1 365</strong></td>
-<td style="text-align: right;"><strong>1 290</strong></td>
+<td style="text-align: right;"><strong>-1 189</strong></td>
+<td style="text-align: right;"><strong>-703</strong></td>
 <td style="text-align: right;"><strong>210</strong></td>
 <td style="text-align: right;"><strong>190</strong></td>
 </tr>
 <tr class="even">
 <td><strong>Маржа</strong></td>
-<td style="text-align: right;"><strong>8.6%</strong></td>
-<td style="text-align: right;"><strong>8.1%</strong></td>
+<td style="text-align: right;"><strong>-7.5%</strong></td>
+<td style="text-align: right;"><strong>-4.4%</strong></td>
 <td style="text-align: right;"><strong>1.3%</strong></td>
 <td style="text-align: right;"><strong>1.2%</strong></td>
 </tr>
 <tr class="odd">
 <td>Рентабельность к Себесу</td>
-<td style="text-align: right;">17.1%</td>
-<td style="text-align: right;">16.2%</td>
+<td style="text-align: right;">-14.9%</td>
+<td style="text-align: right;">-8.8%</td>
 <td style="text-align: right;">2.6%</td>
 <td style="text-align: right;">2.4%</td>
 </tr>
@@ -3556,20 +2683,19 @@ Ozon-кабинет: нет · цена ×2 = 15 945 ₽</p>
 </tr>
 <tr class="odd">
 <td>Verdict</td>
-<td style="text-align: right;">🟡 YELLOW</td>
-<td style="text-align: right;">🟡 YELLOW</td>
+<td style="text-align: right;">🔴 RED</td>
+<td style="text-align: right;">🔴 RED</td>
 <td style="text-align: right;">🔴 RED</td>
 <td style="text-align: right;">🔴 RED</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li><em>WB · ФБС:</em> WB-ФБС: комиссия категории — публичная оценка,
-требует проверки в LK; маржа 8.6% в коридоре 5-15% — рабочий минимум,
-после СПП реальная +5-15%</li>
+<li><em>WB · ФБС:</em> убыток на единицу — закупка/логистика съедает
+выручку</li>
 <li><em>WB · ФБО:</em> WB-ФБО логистика аппроксимирована (SKU вне
-вкладки «юнит ФБО»); маржа 8.1% в коридоре 5-15% — рабочий минимум,
-после СПП реальная +5-15%</li>
+вкладки «юнит ФБО»); убыток на единицу — закупка/логистика съедает
+выручку</li>
 <li><em>Ozon · ФБС:</em> Ozon: ставки из статичной шкалы — live-данных
 кабинета (ozon-prices.json) нет; точная комиссия — в LK / через фидер;
 Ozon-ФБС «обработка отправления» — дефолт-плейсхолдер ~15 ₽; точная из
